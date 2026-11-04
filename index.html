@@ -316,10 +316,11 @@ body.dark .btn-ghost:hover { color: #e2e8f0 !important; border-color: #64748b !i
 </head>
 <body>
 <script src="config.js"></script>
+<script defer src="offers-admin.js"></script>
 
 <div id="auth-screen">
   <div class="auth-card">
-    <h1>Newsletter Builder</h1>
+    <h1>Prague Eyewear Offers</h1>
     <p>Bitte melden Sie sich mit Ihrem freigeschalteten Konto an.</p>
     <form id="auth-form">
       <label class="auth-label" for="auth-email">E-Mail</label>
@@ -375,7 +376,7 @@ body.dark .btn-ghost:hover { color: #e2e8f0 !important; border-color: #64748b !i
       </div>
       <div id="body-zahlaví" style="display:none" class="sect-body">
         <label class="field-label">Logo-Bild (URL)</label>
-        <input type="text" id="logo-url" value="https://www.newsletter-brillengrosshandel.net/wp-content/uploads/2020/02/LOGO-Aktionsware.jpg" oninput="refresh()">
+        <input type="text" id="logo-url" value="" oninput="refresh()">
         <div class="row2" style="margin-top:9px">
           <div>
             <label class="field-label" style="margin-top:0">KW</label>
@@ -399,21 +400,21 @@ body.dark .btn-ghost:hover { color: #e2e8f0 !important; border-color: #64748b !i
         <label class="field-label">Anrede</label>
         <input type="text" id="anrede" value="Liebe Augenoptiker Innen, liebe Freunde," oninput="refresh()">
         <label class="field-label">Unterzeile (rot)</label>
-        <input type="text" id="untertitel" value="nachstehend unser &quot;Mittwochs-Angebot&quot;" oninput="refresh()">
+        <input type="text" id="untertitel" value="" oninput="refresh()">
         <label class="field-label">Aktionstitel (groß)</label>
-        <input type="text" id="aktion-titel" value="JEDE FASSUNG 9,90 €" oninput="refresh()">
+        <input type="text" id="aktion-titel" value="Aktionsangebot" oninput="refresh()">
         <div class="row2">
           <div>
             <label class="field-label">Gültig bis</label>
-            <input type="text" id="gueltig-bis" value="07.10.2026" oninput="refresh()">
+            <input type="text" id="gueltig-bis" value="" oninput="refresh()">
           </div>
           <div>
             <label class="field-label">A-Preis (Standard)</label>
-            <input type="text" id="apreis-default" value="9,90 €" oninput="refresh()">
+            <input type="text" id="apreis-default" value="" oninput="refresh()">
           </div>
         </div>
         <label class="field-label">Laufband-Zeile (rosa Box)</label>
-        <input type="text" id="ticker" value="9,90 € %%%%%% 9,90 € %%%%%% 9,90 € %%%%%% 9,90 €" oninput="refresh()">
+        <input type="text" id="ticker" value="" oninput="refresh()">
       </div>
     </div>
 
@@ -509,35 +510,34 @@ body.dark .btn-ghost:hover { color: #e2e8f0 !important; border-color: #64748b !i
         <span class="sect-caret" id="caret-ceny">▸</span>
       </div>
       <div id="body-ceny" style="display:none" class="sect-body">
+        <label class="field-label" for="pe-expiry">Testangebot gültig bis (lokale Zeit)</label>
+        <input type="datetime-local" id="pe-expiry" oninput="refresh()">
+        <p>Testbetrieb: nur Beispieldaten, kein E-Mail-Versand.</p>
+        <button type="button" class="btn" id="pe-publish">Testlink erstellen</button>
+        <button type="button" class="btn" id="pe-close">Aktuellen Link schließen</button>
+        <button type="button" class="btn" id="pe-orders">Testanfragen anzeigen</button>
+        <input type="text" id="pe-link" readonly aria-label="Testlink">
+        <p id="pe-status" role="status"></p>
+        <pre id="pe-list" style="white-space:pre-wrap;overflow-wrap:anywhere"></pre>
         <label class="field-label">Bestellliste .pdf (URL)</label>
         <input type="text" id="pdf-url" placeholder="https://… (leer = Block ausblenden)" oninput="refresh()">
         <label class="field-label">Bestellliste .xls (URL)</label>
         <input type="text" id="xls-url" placeholder="https://… (leer = Block ausblenden)" oninput="refresh()">
         <label class="field-label">Preishinweis</label>
-        <input type="text" id="preis-hinweis" value="alle Preise zzgl. der gesetzlichen MwSt." oninput="refresh()">
+        <input type="text" id="preis-hinweis" value="Alle Preise inkl. MwSt." oninput="refresh()">
         <label class="field-label">Vorrat-Hinweis</label>
-        <input type="text" id="vorrat" value="alle Artikel so lange Vorrat reicht." oninput="refresh()">
+        <input type="text" id="vorrat" value="Verfügbarkeit wird separat bestätigt." oninput="refresh()">
         <label class="field-label">Showroom-Text</label>
-        <textarea id="showroom" rows="5" oninput="refresh()">Unser Showroom in Mühlacker ist von Montag bis Freitag von 10.00 bis 17.00 Uhr geöffnet. Falls Sie außerhalb der
-regulären Öffnungszeiten vorbeikommen möchten, können Sie gerne einen Termin mit uns vereinbaren.
-Genießen Sie den Vorteil, entspannt durch die Regale zu gehen, die Modelle anzuschauen und direkt zu kaufen was Ihnen zusagt.
-Wir haben auch immer Schnäppchen und reduzierte Ware für Sie da.</textarea>
+        <textarea id="showroom" rows="5" oninput="refresh()"></textarea>
         <label class="field-label">Auswahlsendung-Text</label>
-        <textarea id="auswahl" rows="6" oninput="refresh()">Wir arbeiten auch mit Auswahlsendungen. Falls Sie eine Aktion geplant haben, oder unsere Brillenfassungen einfach
-mal in die Hand nehmen wollen, bestellen Sie eine Auswahlsendung.
-Egal ob telefonisch, per FAX oder email. Setzen Sie sich mit uns in Verbindung. Wir senden Ihnen ein Auswahlpaket zu.
-Sie entnehmen, was Ihnen gefällt.
-Den Rest schicken Sie uns innerhalb von zwei Wochen in den Originaltüten zurück,
-oder wir lassen die Sendung gegen eine Gebühr von 10,90 € zurückholen.</textarea>
+        <textarea id="auswahl" rows="6" oninput="refresh()"></textarea>
         <label class="field-label">Abschluss (jede Zeile = eigene Zeile)</label>
-        <textarea id="abschluss" rows="4" oninput="refresh()">Wir wünschen Ihnen eine erfolgreiche Woche
-und freuen uns auf Ihre Bestellung!
-Herzlichst
-Das Team vom Brillengroßhandel</textarea>
+        <textarea id="abschluss" rows="4" oninput="refresh()">Mit freundlichen Grüßen
+Ihr Prague Eyewear Team</textarea>
         <label class="field-label">Team-Foto (URL)</label>
-        <input type="text" id="team-img" value="https://www.newsletter-brillengrosshandel.net/wp-content/uploads/2011/09/Bischoff_Heinz-klein2-300x172.jpg" oninput="refresh()">
+        <input type="text" id="team-img" value="" oninput="refresh()">
         <label class="field-label">Bildunterschrift Team</label>
-        <input type="text" id="team-names" value="Rita Bischoff und Petra Heinz" oninput="refresh()">
+        <input type="text" id="team-names" value="" oninput="refresh()">
       </div>
     </div>
 
@@ -551,57 +551,57 @@ Das Team vom Brillengroßhandel</textarea>
         <div class="row2">
           <div>
             <label class="field-label">Firmenname</label>
-            <input type="text" id="ftr-firma" value="Brillengroßhandel" oninput="refresh()">
+            <input type="text" id="ftr-firma" value="Prague Eyewear GmbH" oninput="refresh()">
           </div>
           <div>
             <label class="field-label">Geschäftsführung</label>
-            <input type="text" id="ftr-gf" value="Rita Bischoff" oninput="refresh()">
+            <input type="text" id="ftr-gf" value="Jiri Kaiser" oninput="refresh()">
           </div>
         </div>
         <div class="row2">
           <div>
             <label class="field-label">Straße</label>
-            <input type="text" id="ftr-strasse" value="Ziegeleistr. 18-24" oninput="refresh()">
+            <input type="text" id="ftr-strasse" value="Mülhausenerstr. 79" oninput="refresh()">
           </div>
           <div>
             <label class="field-label">PLZ / Ort</label>
-            <input type="text" id="ftr-ort" value="D-75417 Mühlacker" oninput="refresh()">
+            <input type="text" id="ftr-ort" value="47839 Krefeld, Deutschland" oninput="refresh()">
           </div>
         </div>
         <div class="row2">
           <div>
             <label class="field-label">Telefon</label>
-            <input type="text" id="ftr-tel" value="07041 815 664" oninput="refresh()">
+            <input type="text" id="ftr-tel" value="+49 178 36 37 664" oninput="refresh()">
           </div>
           <div>
             <label class="field-label">Fax</label>
-            <input type="text" id="ftr-fax" value="07041 815 667" oninput="refresh()">
+            <input type="text" id="ftr-fax" value="" oninput="refresh()">
           </div>
         </div>
         <div class="row2">
           <div>
             <label class="field-label">Kontakt 1 – Name</label>
-            <input type="text" id="ftr-name1" value="Frau Bischoff" oninput="refresh()">
+            <input type="text" id="ftr-name1" value="Vertrieb" oninput="refresh()">
           </div>
           <div>
             <label class="field-label">Kontakt 1 – E-Mail</label>
-            <input type="text" id="ftr-email" value="rb@brillengrosshandel.net" oninput="refresh()">
+            <input type="text" id="ftr-email" value="vertrieb@prague-eyewear.de" oninput="refresh()">
           </div>
         </div>
         <div class="row2">
           <div>
             <label class="field-label">Kontakt 2 – Name</label>
-            <input type="text" id="ftr-name2" value="Frau Heinz" oninput="refresh()">
+            <input type="text" id="ftr-name2" value="" oninput="refresh()">
           </div>
           <div>
             <label class="field-label">Kontakt 2 – E-Mail</label>
-            <input type="text" id="ftr-email2" value="ph@brillengrosshandel.net" oninput="refresh()">
+            <input type="text" id="ftr-email2" value="" oninput="refresh()">
           </div>
         </div>
         <label class="field-label">Web</label>
-        <input type="text" id="ftr-web" value="www.brillengrosshandel.net" oninput="refresh()">
+        <input type="text" id="ftr-web" value="" oninput="refresh()">
         <label class="field-label">Copyright-Zeile</label>
-        <input type="text" id="ftr-copy" value="Copyright © Brillengroßhandel Bischoff 2013" oninput="refresh()">
+        <input type="text" id="ftr-copy" value="Amtsgericht Krefeld · HRB 17105 · USt-IdNr. DE322113936" oninput="refresh()">
       </div>
     </div>
 
@@ -878,6 +878,7 @@ function authMessage(text, error=false) {
 function lockNewsletter(message='Bitte melden Sie sich an.', error=false) {
   const previouslySignedIn = !!newsletterUser;
   newsletterUser = null;
+  window.clearOfferAdmin?.();
   ++productGeneration;
   if (productRequest) productRequest.abort();
   productRequest = null;
@@ -1356,7 +1357,7 @@ function rebuildSelConfig() {
   const selProds = selectedOrder.map(gm => ALL_PRODUCTS.find(p => p.gm === gm)).filter(Boolean);
   if (!selProds.length) { wrap.style.display = 'none'; cont.innerHTML = ''; return; }
 
-  const defPrice = val('apreis-default') || '9,90 €';
+  const defPrice = val('apreis-default') || '';
   wrap.style.display = '';
   cont.innerHTML = selProds.map(p => {
     const ex = Object.assign(newExtras(), productExtras.get(p.gm) || {});
@@ -1540,7 +1541,7 @@ function buildHTML() {
   const name2     = val('ftr-name2');
   const mail2     = val('ftr-email2');
   const webRaw    = val('ftr-web');
-  const web       = webHref(webRaw);
+  const web       = offerLink() || webHref(webRaw);
   const copy      = val('ftr-copy');
   const subject   = val('email-subject') || autoSubject();
   const pretext   = val('email-pretext');
@@ -1627,7 +1628,7 @@ ${pretextTag}
     ${titel ? `<h1 style="margin:20px 0;text-align:center;font-size:32px;font-weight:bold;font-family:${F_VERD};color:#303030">${esc(titel)}</h1>` : ''}
 
     ${gueltig ? `<div style="border-bottom:1px solid ${C_LINE};padding:0 0 4px 0">
-      <p style="margin:0 0 4px 0;font-size:16px;font-weight:bold;font-family:${F_ARIAL};color:#000000">AKTIONSRABATT GÜLTIG BIS&nbsp;&nbsp; ${esc(gueltig)}&nbsp; oder so lange Vorrat reicht</p>
+      <p style="margin:0 0 4px 0;font-size:16px;font-weight:bold;font-family:${F_ARIAL};color:#000000">AKTIONSRABATT GÜLTIG BIS&nbsp;&nbsp; ${esc(gueltig)}</p>
     </div>` : ''}
 
     <p style="margin:0 0 16px 0;line-height:18px;font-size:12px">&nbsp;</p>
@@ -1642,11 +1643,7 @@ ${pretextTag}
       <tr><td style="padding:1px">${HR}</td></tr>` : ''}
 
       <tr><td style="padding:40px 4px 10px 4px">
-        <div style="border-bottom:1px solid ${C_LINE};padding-bottom:4px;margin-bottom:18px">
-          <p style="margin:0 0 4px 0;font-size:16px;font-weight:bold;font-family:${F_ARIAL};color:#000000">Besuchen Sie unseren Online Shop unter<br>
-          ${link(web, esc(webRaw), 'font-size:12px;font-weight:normal')}</p>
-        </div>
-        ${pVerdB('Registrieren Sie sich, wir schalten Sie dann frei, sodass Sie alle Produkte mit Preisen<br>sehen und auch direkt bestellen können.')}
+        ${offerLink() ? pVerdB(link(offerLink(), 'B2B-Angebot öffnen')) : ''}
         ${pVerdB(`<br>Unsere emailadressen lauten:<br>
           ${mail1 ? `${esc(name1)}: <a href="mailto:${esc(mail1)}" style="color:#333333;font-weight:normal">${esc(mail1)}</a><br>` : ''}
           ${mail2 ? `${esc(name2)}:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <a href="mailto:${esc(mail2)}" style="color:#333333;font-weight:normal">${esc(mail2)}</a>` : ''}`)}
@@ -1799,7 +1796,7 @@ function exportPDF() {
 // ════════════════════════════════════════════════════
 //  SAVE / LOAD DRAFT
 // ════════════════════════════════════════════════════
-const DRAFT_KEY = 'pe_offers_draft_v1';
+const DRAFT_KEY = 'pe_offers_draft_v2';
 const FIELD_DEFAULTS = {};   // wird beim Start aus den HTML-Standardwerten befüllt
 const FIELD_IDS = ['logo-url','kw','jahr','anrede','untertitel','aktion-titel','gueltig-bis','apreis-default','ticker',
   'pdf-url','xls-url','preis-hinweis','vorrat','showroom','auswahl','abschluss','team-img','team-names',
