@@ -54,9 +54,15 @@ for (const [id,action] of Object.entries({
     return "Link geschlossen.";
   },
   "pe-orders":async()=>{
+    const state = s => ({accepted:"von Microsoft angenommen",rejected:"abgelehnt",unknown:"unbekannt",
+      sending:"Versandstatus offen",auth_failed:"Anmeldung fehlgeschlagen",wrong_mailbox:"Falsches Postfach",
+      not_connected:"Nicht verbunden"})[s] || "Unbekannt";
+    const mail = s => s && typeof s === "object"
+      ? "Intern: "+state(s.internal)+" · Bestätigung: "+state(s.confirmation)
+      : state(s);
     const out=await offerAdmin({action:"orders"});
-    peEl("pe-list").textContent=out.orders.map(o=>o.reference+" · "+o.company+" · "+o.email+"\n"+o.items.map(x=>x.quantity+" × "+x.model+" / "+x.variant).join("\n")).join("\n\n");
-    return out.orders.length+" Testanfragen angezeigt. E-Mail noch nicht verbunden.";
+    peEl("pe-list").textContent=out.orders.map(o=>o.reference+" · "+o.company+" · "+o.email+"\n"+o.items.map(x=>x.quantity+" × "+x.model+" / "+x.variant).join("\n")+"\nE-Mail: "+mail(o.mailStatus)).join("\n\n");
+    return out.orders.length+" Testanfragen angezeigt.";
   }
 })) peEl(id).addEventListener("click",async()=>{
   const button=peEl(id);button.disabled=true;
