@@ -1,0 +1,1899 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Prague Eyewear – Angebote · Testprojekt</title>
+<style>
+/* ─── RESET ─────────────────────────────────────────── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+:root {
+  --acc: #e87722;
+  --dark: #0f172a;
+  --mid: #334155;
+  --muted: #64748b;
+  --border: #e2e8f0;
+  --bg: #f8fafc;
+}
+html, body { height: 100%; overflow: hidden; }
+body {
+  font-family: -apple-system, 'Segoe UI', Arial, sans-serif;
+  font-size: 13px;
+  color: var(--dark);
+  background: var(--bg);
+  display: flex;
+  flex-direction: column;
+}
+
+/* ─── TOP BAR ────────────────────────────────────────── */
+.topbar {
+  background: var(--dark);
+  height: 52px;
+  padding: 0 16px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-shrink: 0;
+}
+.topbar-logo { font-size: 15px; font-weight: 900; color: var(--acc); letter-spacing: 2px; text-transform: uppercase; }
+.topbar-logo span { color: white; }
+.topbar-sub { font-size: 11px; color: #475569; margin-left: -4px; }
+.topbar-spacer { flex: 1; }
+.btn {
+  padding: 7px 14px; border: none; border-radius: 6px;
+  font-size: 12px; font-weight: 600; cursor: pointer;
+  transition: opacity 0.15s; white-space: nowrap;
+}
+.btn:hover { opacity: 0.82; }
+.btn-primary { background: var(--acc); color: white; }
+.btn-ghost { background: transparent; color: #94a3b8; border: 1px solid #334155; }
+.btn-ghost:hover { color: white; opacity: 1; border-color: #64748b; }
+.btn-green { background: #16a34a; color: white; }
+.btn-blue  { background: #3b82f6; color: white; }
+
+/* ─── LAYOUT ─────────────────────────────────────────── */
+.main { display: flex; flex: 1; overflow: hidden; min-height: 0; }
+
+/* ─── SIDEBAR ────────────────────────────────────────── */
+.sidebar {
+  width: 340px; min-width: 280px;
+  background: white; border-right: 1px solid var(--border);
+  overflow-y: auto; flex-shrink: 0;
+}
+.sidebar::-webkit-scrollbar { width: 5px; }
+.sidebar::-webkit-scrollbar-thumb { background: #e2e8f0; border-radius: 3px; }
+
+/* Collapsible sections */
+.sect { border-bottom: 1px solid var(--border); }
+.sect-toggle {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 11px 16px; cursor: pointer; user-select: none;
+  transition: background 0.1s;
+}
+.sect-toggle:hover { background: #f8fafc; }
+.sect-title {
+  font-size: 9.5px; font-weight: 700; letter-spacing: 1.5px;
+  text-transform: uppercase; color: #94a3b8;
+  display: flex; align-items: center; gap: 7px;
+}
+.sect-num {
+  display: inline-flex; align-items: center; justify-content: center;
+  width: 16px; height: 16px; border-radius: 50%;
+  background: var(--border); color: #64748b;
+  font-size: 9px; font-weight: 800; flex-shrink: 0;
+}
+.sect-toggle.open .sect-num { background: var(--acc); color: white; }
+.sect-caret { font-size: 10px; color: #cbd5e1; transition: transform 0.2s; }
+.sect-badge { background: var(--acc); color: white; font-size: 9px; font-weight: 700; padding: 1px 6px; border-radius: 10px; }
+@keyframes nl-fade { from{opacity:0} to{opacity:1} }
+@keyframes nl-up { from{opacity:0;transform:translateY(7px)} to{opacity:1;transform:translateY(0)} }
+.sect-body { padding: 0 16px 14px; animation: nl-fade .18s ease; }
+.model-item { animation: nl-up .15s ease both; }
+.model-item:nth-child(2){animation-delay:.04s} .model-item:nth-child(3){animation-delay:.08s}
+.model-item:nth-child(4){animation-delay:.12s} .model-item:nth-child(5){animation-delay:.16s}
+.model-item:nth-child(6){animation-delay:.2s}
+.sect-sub {
+  font-size: 9px; font-weight: 700; letter-spacing: 1.2px;
+  text-transform: uppercase; color: #94a3b8;
+  margin: 10px 0 5px;
+}
+.sect-hr { border: none; border-top: 1px dashed #e2e8f0; margin: 10px 0; }
+
+.field-label {
+  display: block; font-size: 11px; font-weight: 600; color: var(--mid);
+  margin-bottom: 3px; margin-top: 9px;
+}
+.field-label:first-child { margin-top: 0; }
+
+input[type=text], input[type=number], input[type=password], textarea {
+  width: 100%; border: 1px solid var(--border); border-radius: 6px;
+  padding: 6px 10px; font-size: 12px; color: var(--dark);
+  background: white; outline: none; font-family: inherit;
+}
+input[type=text]:focus, input[type=number]:focus, input[type=password]:focus, textarea:focus {
+  border-color: var(--acc); box-shadow: 0 0 0 2px rgba(232,119,34,0.12);
+}
+textarea { resize: vertical; min-height: 56px; line-height: 1.5; }
+.row2 { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+.row3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 6px; }
+
+/* API source */
+.api-status { font-size: 10px; color: #64748b; line-height: 1.5; margin-top: 2px; word-break: break-word; }
+.api-status.ok  { color: #16a34a; }
+.api-status.err { color: #dc2626; }
+
+/* Search */
+.search-wrap { position: relative; margin-bottom: 8px; }
+.search-wrap input[type=text] { padding-left: 30px; }
+.search-icon { position: absolute; left: 9px; top: 50%; transform: translateY(-50%); color: #94a3b8; font-size: 14px; pointer-events: none; line-height: 1; }
+
+/* Chips */
+.chip-row { display: flex; flex-wrap: wrap; gap: 4px; margin-bottom: 8px; }
+.chip {
+  font-size: 10px; font-weight: 600; padding: 3px 9px;
+  border: 1px solid var(--border); border-radius: 12px;
+  cursor: pointer; color: var(--muted); background: white;
+  transition: all 0.12s; user-select: none; white-space: nowrap;
+}
+.chip:hover { border-color: var(--acc); color: var(--acc); }
+.chip.active { background: var(--acc); color: white; border-color: var(--acc); }
+
+/* Mini buttons */
+.mini-btns { display: flex; gap: 5px; margin-bottom: 7px; flex-wrap: wrap; }
+.mini-btn {
+  font-size: 10px; padding: 2px 8px; border: 1px solid var(--border);
+  border-radius: 4px; background: none; cursor: pointer; color: #64748b;
+  transition: border-color 0.15s, color 0.15s;
+}
+.mini-btn:hover { border-color: var(--acc); color: var(--acc); }
+
+/* Checkboxes */
+.check-group { display: flex; flex-direction: column; gap: 2px; max-height: 130px; overflow-y: auto; }
+.check-group::-webkit-scrollbar { width: 3px; }
+.check-group::-webkit-scrollbar-thumb { background: #e2e8f0; }
+.check-row { display: flex; align-items: center; gap: 7px; cursor: pointer; padding: 3px 6px; border-radius: 5px; transition: background 0.1s; }
+.check-row:hover { background: #f8fafc; }
+.check-row input[type=checkbox] { width: 13px; height: 13px; accent-color: var(--acc); cursor: pointer; flex-shrink: 0; }
+.check-row span { font-size: 11px; color: var(--mid); user-select: none; }
+
+/* Model list */
+.model-list { display: flex; flex-direction: column; gap: 3px; max-height: 240px; overflow-y: auto; }
+.model-list::-webkit-scrollbar { width: 3px; }
+.model-list::-webkit-scrollbar-thumb { background: #e2e8f0; }
+.model-item { display: flex; align-items: center; gap: 8px; padding: 6px 8px; border: 1px solid var(--border); border-radius: 7px; cursor: pointer; transition: border-color 0.15s, background 0.15s; }
+.model-item:hover { border-color: #cbd5e1; background: #fafafa; }
+.model-item.on { border-color: var(--acc); background: #fff8f3; }
+.model-thumb { width: 58px; height: 38px; object-fit: cover; border-radius: 4px; border: 1px solid var(--border); flex-shrink: 0; background: #f1f5f9; display: block; }
+.model-item-info { flex: 1; min-width: 0; }
+.model-brand { font-size: 9px; font-weight: 700; color: var(--acc); text-transform: uppercase; letter-spacing: 0.5px; }
+.model-name  { font-size: 12px; font-weight: 700; color: var(--dark); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.model-sub   { font-size: 10px; color: #94a3b8; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.var-dots { display: flex; flex-direction: column; gap: 2px; margin-top: 3px; }
+.var-row { display: flex; align-items: center; gap: 5px; min-width: 0; }
+.var-dot { width: 11px; height: 11px; border-radius: 50%; border: 1px solid rgba(0,0,0,0.25); flex-shrink: 0; }
+.var-name { font-size: 10px; color: #64748b; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.var-name b { color: #475569; font-weight: 700; }
+body.dark .var-name { color: #94a3b8; }
+body.dark .var-name b { color: #cbd5e1; }
+body.dark .var-dot { border-color: rgba(255,255,255,0.3); }
+.model-add { font-size: 17px; font-weight: 700; color: #cbd5e1; flex-shrink: 0; width: 18px; text-align: center; line-height: 1; }
+.model-item.on .model-add { color: var(--acc); }
+.no-models { font-size: 12px; color: #94a3b8; text-align: center; padding: 16px 0; }
+.more-label { font-size: 10px; color: #94a3b8; text-align: center; padding: 6px 0; font-style: italic; }
+
+/* Selected product config */
+.sel-card {
+  border: 1px solid var(--border); border-radius: 8px;
+  padding: 8px 10px; margin-bottom: 6px; background: #fafafa;
+  transition: opacity 0.15s, border-color 0.15s;
+}
+.sel-card:last-child { margin-bottom: 0; }
+.sel-card.dragging { opacity: 0.35; }
+.sel-card.drag-over { border-color: var(--acc); background: #fff8f3; }
+.sel-card-top { display: flex; align-items: flex-start; gap: 6px; margin-bottom: 4px; }
+.drag-handle { color: #cbd5e1; cursor: grab; font-size: 14px; user-select: none; padding: 0 2px; line-height: 1.4; flex-shrink: 0; }
+.drag-handle:active { cursor: grabbing; }
+.sel-card-info { flex: 1; min-width: 0; }
+.sel-card-brand { font-size: 9px; font-weight: 700; color: var(--acc); text-transform: uppercase; letter-spacing: 0.5px; }
+.sel-card-name { font-size: 11px; font-weight: 700; color: var(--dark); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.badge-btns { display: flex; gap: 4px; margin-top: 6px; }
+.badge-btn {
+  font-size: 9px; font-weight: 800; padding: 2px 8px;
+  border-radius: 4px; border: 1px solid var(--border);
+  cursor: pointer; letter-spacing: 0.5px; background: white; color: #94a3b8;
+  transition: all 0.12s;
+}
+.badge-btn:hover { border-color: #94a3b8; }
+.badge-btn.active-neu { background: var(--acc); color: white; border-color: var(--acc); }
+.badge-btn.active-sale { background: #ef4444; color: white; border-color: #ef4444; }
+
+/* Limit warning */
+.limit-warn {
+  background: #fef2f2; border: 1px solid #fecaca; color: #dc2626;
+  font-size: 11px; font-weight: 600; padding: 6px 10px; border-radius: 6px;
+  margin-top: 8px; display: none;
+}
+.limit-warn.show { display: block; }
+
+/* ─── PREVIEW ────────────────────────────────────────── */
+.preview-pane { flex: 1; overflow: hidden; display: flex; flex-direction: column; background: #e2e8f0; }
+.preview-bar { background: #f8fafc; border-bottom: 1px solid var(--border); padding: 7px 16px; font-size: 11px; color: #94a3b8; display: flex; align-items: center; gap: 10px; flex-shrink: 0; }
+.preview-bar strong { color: var(--mid); }
+.preview-frame { flex: 1; width: 100%; border: none; display: block; }
+
+/* ─── STATUS ─────────────────────────────────────────── */
+.status { background: #f0fdf4; border-top: 1px solid #bbf7d0; height: 26px; padding: 0 16px; font-size: 11px; color: #16a34a; display: none; align-items: center; justify-content: center; flex-shrink: 0; }
+.status.show { display: flex; }
+
+/* ─── DARK MODE ──────────────────────────────────────── */
+body.dark { --bg: #0f172a; --border: #334155; --mid: #94a3b8; --muted: #94a3b8; color: #e2e8f0; }
+body.dark .topbar { background: #0f172a; }
+body.dark .sidebar { background: #1e293b; }
+body.dark .sect { border-color: #334155; }
+body.dark .sect-toggle { color: #e2e8f0; }
+body.dark .sect-toggle:hover { background: #0f172a; }
+body.dark .sect-title { color: #94a3b8; }
+body.dark .sect-num { background: #334155; color: #94a3b8; }
+body.dark .sect-toggle.open .sect-num { background: var(--acc); color: white; }
+body.dark .sect-caret { color: #475569; }
+body.dark .sect-sub { color: #64748b; }
+body.dark .sect-hr { border-color: #334155; }
+body.dark .preview-pane { background: #1e293b; }
+body.dark .preview-bar { background: #0f172a; border-color: #334155; color: #94a3b8; }
+body.dark .preview-bar strong { color: #cbd5e1; }
+body.dark .preview-frame { margin: 0; width: 100%; border-radius: 0; box-shadow: none; }
+body.dark input[type=text], body.dark input[type=number], body.dark input[type=password], body.dark textarea { background: #0f172a !important; color: #e2e8f0 !important; border-color: #334155 !important; }
+body.dark input[type=text]::placeholder, body.dark input[type=password]::placeholder, body.dark textarea::placeholder { color: #475569 !important; }
+body.dark .api-status { color: #94a3b8; }
+body.dark .api-status.ok  { color: #4ade80; }
+body.dark .api-status.err { color: #f87171; }
+body.dark .chip { background: #0f172a; color: #94a3b8; border-color: #334155; }
+body.dark .chip:hover { border-color: var(--acc); color: var(--acc); }
+body.dark .chip.active { background: var(--acc); color: white; border-color: var(--acc); }
+body.dark .sel-card { background: #0f172a; border-color: #334155; }
+body.dark .sel-card-name { color: #e2e8f0 !important; }
+body.dark .model-item { background: #0f172a; border-color: #334155; }
+body.dark .model-item:hover { background: #1e293b; border-color: #475569; }
+body.dark .model-item.on { background: #1a0f00; border-color: var(--acc); }
+body.dark .model-name { color: #e2e8f0 !important; }
+body.dark .model-sub { color: #64748b !important; }
+body.dark .model-thumb { border-color: #334155; background: #1e293b; }
+body.dark .model-add { color: #475569; }
+body.dark .model-list::-webkit-scrollbar-thumb { background: #334155; }
+body.dark .no-models, body.dark .more-label { color: #64748b; }
+body.dark .sel-card-brand { color: var(--acc) !important; }
+body.dark .drag-handle { color: #475569; }
+body.dark .badge-btn { background: #0f172a; color: #94a3b8; border-color: #334155; }
+body.dark .mini-btn { color: #94a3b8; border-color: #334155; background: #0f172a; }
+body.dark .mini-btn:hover { color: var(--acc); border-color: var(--acc); }
+body.dark .field-label { color: #94a3b8 !important; }
+body.dark .status { background: #0d2b1d; border-color: #166534; }
+body.dark .limit-warn { background: #2d0a0a; border-color: #7f1d1d; }
+body.dark .search-icon { color: #64748b; }
+body.dark .btn-ghost { color: #94a3b8 !important; border-color: #334155 !important; }
+body.dark .btn-ghost:hover { color: #e2e8f0 !important; border-color: #64748b !important; }
+/* ─── MOBILE ─────────────────────────────────────────── */
+#mob-toggle{display:none;}
+@media(max-width:768px){
+  .btn-label{display:none;}
+  html,body{height:auto!important;overflow:auto!important;}
+  .topbar{padding:6px 10px;gap:4px;height:auto;overflow-x:auto;flex-wrap:nowrap;-webkit-overflow-scrolling:touch;}
+  .topbar-logo,.topbar-sub,.topbar-spacer{display:none!important;}
+  .btn{padding:6px 9px;font-size:11px;white-space:nowrap;flex-shrink:0;}
+  #mob-toggle{display:inline-flex;align-items:center;gap:4px;flex-shrink:0;}
+  .main{display:flex;flex-direction:column;height:auto!important;overflow:visible!important;}
+  body:not([data-mob-view="preview"]) .preview-pane{display:none!important;}
+  body:not([data-mob-view="preview"]) .sidebar{width:100vw!important;min-width:0!important;max-width:100vw!important;border-right:none!important;overflow-y:auto!important;flex:1 1 auto!important;height:auto!important;}
+  body[data-mob-view="preview"] .sidebar{display:none!important;}
+  body[data-mob-view="preview"] .preview-pane{display:block!important;width:100vw!important;}
+  body[data-mob-view="preview"] .preview-frame{display:block!important;width:100%!important;height:calc(100vh - 78px)!important;}
+  input,textarea,select{max-width:100%!important;width:100%!important;box-sizing:border-box!important;}
+  .sect-body{padding:0 12px 12px;}
+  .model-list{max-height:60vh!important;}
+}
+
+#auth-screen {position:fixed;inset:0;z-index:99999;overflow:auto;display:flex;align-items:center;justify-content:center;padding:24px;background:#0f172a;color:#0f172a;font-family:Arial,sans-serif;}
+#auth-screen[hidden],#app-shell[hidden] {display:none!important;}
+#app-shell {display:flex;flex-direction:column;flex:1;min-height:0;min-width:0;overflow:hidden;}
+.topbar {overflow-x:auto;}
+.account-area {display:flex;align-items:center;gap:7px;padding:4px 5px 4px 8px;background:#1e293b;border:1px solid #64748b;border-radius:9px;flex-shrink:0;}
+.account-identity {display:flex;align-items:center;gap:6px;color:#f8fafc;font-size:11px;white-space:nowrap;}
+.account-identity svg,.account-logout svg {width:18px;height:18px;flex-shrink:0;}
+.account-logout {display:inline-flex;align-items:center;gap:6px;padding:6px 9px;background:#fff7ed;color:#9a3412;border:1px solid #fb923c;border-radius:6px;font-family:inherit;font-size:12px;font-weight:700;cursor:pointer;white-space:nowrap;}
+.account-logout:hover {background:#ffedd5;}
+.account-logout:focus-visible {outline:2px solid #fff;outline-offset:3px;}
+@media(max-width:1500px) {.account-identity span {display:none;}}
+@media(max-width:768px) {#app-shell {flex:none;overflow:visible;}.account-area {padding:3px 4px;gap:5px;}.account-logout {font-size:11px;padding:5px 7px;}}
+.auth-card {width:100%;max-width:410px;background:#fff;border-radius:14px;padding:28px;box-shadow:0 20px 60px #0004;}
+.auth-card h1 {font-size:23px;margin:0 0 8px;}.auth-card p {font-size:14px;line-height:1.5;color:#475569;}
+.auth-card label.auth-label {display:block;font-size:13px;font-weight:bold;margin-top:16px;}
+.auth-card input[type=email],.auth-card input[type=password] {box-sizing:border-box;width:100%;padding:11px;border:1px solid #94a3b8;border-radius:7px;margin-top:6px;background:#fff;color:#0f172a;}
+.auth-remember {display:flex;gap:8px;align-items:flex-start;margin:16px 0;font-size:13px;line-height:1.4;}.auth-remember input {width:14px!important;height:14px;flex:0 0 14px;margin-top:3px;}.auth-remember span {min-width:0;}
+.auth-submit {width:100%;padding:12px;border:0;border-radius:7px;background:#ea761b;color:#fff;font-size:15px;font-weight:bold;cursor:pointer;}.auth-submit:disabled {opacity:.55;cursor:wait;}
+#auth-message {min-height:36px;font-size:13px;line-height:1.4;margin-top:14px;color:#475569;}#auth-message[data-error=true] {color:#b91c1c;}
+
+</style>
+<link rel="icon" type="image/png" href="assets/prague-eyewear.png">
+<link rel="stylesheet" href="studio.css">
+</head>
+<body class="dark">
+<script src="config.js"></script>
+<script defer src="offers-admin.js"></script>
+
+<div id="auth-screen">
+  <div class="auth-card">
+    <img class="auth-brand" src="assets/prague-eyewear.png" alt="Prague Eyewear GmbH"><h1>Newsletter Studio</h1>
+    <p>Bitte melden Sie sich mit Ihrem freigeschalteten Konto an.</p>
+    <form id="auth-form">
+      <label class="auth-label" for="auth-email">E-Mail</label>
+      <input id="auth-email" name="email" type="email" autocomplete="username" required value="j.kaiser@mi-optics.cz">
+      <label class="auth-label" for="auth-password">Passwort</label>
+      <input id="auth-password" name="password" type="password" autocomplete="current-password" required>
+      <label class="auth-remember"><input id="auth-remember" type="checkbox"><span>Angemeldet bleiben (nur auf einem eigenen Gerät)</span></label>
+      <button id="auth-submit" class="auth-submit" type="submit" disabled>Anmelden</button>
+    </form>
+    <div id="auth-message" role="status" aria-live="polite">Anmeldung wird vorbereitet …</div>
+    <noscript>JavaScript muss für die Anmeldung aktiviert sein.</noscript>
+  </div>
+</div>
+<div id="app-shell" hidden inert>
+
+
+<!-- TOP BAR -->
+<div class="topbar">
+  <div>
+    <div class="topbar-logo"><img src="assets/prague-eyewear.png" alt="Prague Eyewear GmbH"></div>
+    <div class="topbar-sub">Newsletter Studio</div>
+  </div>
+  <div class="topbar-spacer"></div>
+  <div class="account-area">
+    <span class="account-identity" id="account-identity" title="Angemeldetes Konto">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><circle cx="12" cy="12" r="9.5"/><circle cx="12" cy="9" r="3"/><path d="M5 19c1-5 13-5 14 0"/></svg>
+      <span id="account-email">j.kaiser@mi-optics.cz</span>
+    </span>
+    <button class="account-logout" id="auth-logout" onclick="logoutNewsletter()" title="Vom Newsletter Builder abmelden">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 4H4v16h5M13 8l4 4-4 4M8 12h13"/></svg>
+      Abmelden
+    </button>
+  </div>
+  <button id="mob-toggle" class="btn btn-ghost" onclick="toggleMobView()" title="Editor / Vorschau wechseln">👁 Vorschau</button>
+  <button class="btn btn-ghost" onclick="saveDraft()" title="Aktuellen Stand (Produkte, Preise, Texte) in diesem Browser speichern, um später weiterzuarbeiten">💾 <span class="btn-label">Entwurf speichern</span></button>
+  <button class="btn btn-ghost mob-hide" onclick="loadDraft()" title="Zuletzt gespeicherten Entwurf wieder öffnen (nur in diesem Browser)">📂 <span class="btn-label">Entwurf laden</span></button>
+  <button class="btn btn-green" onclick="copyForEmail()" title="Newsletter kopieren und direkt in eine neue E-Mail einfügen (Strg+V)">📧 <span class="btn-label">Für E-Mail kopieren</span></button>
+  <button class="btn btn-ghost mob-hide" onclick="exportPDF()" title="Druckdialog für PDF öffnen">🖨 <span class="btn-label">PDF</span></button>
+  <button class="btn btn-ghost mob-hide" onclick="resetAll()">↺ <span class="btn-label">Reset</span></button>
+  <button class="btn btn-primary mob-hide" onclick="downloadHTML()">⬇ <span class="btn-label">HTML</span></button>
+</div>
+
+<div class="main">
+  <!-- ══════════════ SIDEBAR ══════════════ -->
+  <div class="sidebar">
+    <div class="studio-heading"><span>NEWSLETTER STUDIO</span><h2>Angebot gestalten</h2><p>Produkte auswählen, Inhalte anpassen und exportieren.</p></div>
+
+    <!-- ① KOPFZEILE -->
+    <div class="sect">
+      <div class="sect-toggle" id="tog-zahlaví" onclick="toggleSect('zahlaví')">
+        <div class="sect-title"><span class="sect-num">1</span>Kopfzeile</div>
+        <span class="sect-caret" id="caret-zahlaví">▸</span>
+      </div>
+      <div id="body-zahlaví" style="display:none" class="sect-body">
+        <label class="field-label">Eigenes Logo (URL, optional)</label>
+        <input type="text" id="logo-url" placeholder="Prague Eyewear Logo ist hinterlegt" value="" oninput="refresh()">
+        <div class="row2" style="margin-top:9px">
+          <div>
+            <label class="field-label" style="margin-top:0">KW</label>
+            <input type="number" id="kw" value="39" min="1" max="53" oninput="refresh()">
+          </div>
+          <div>
+            <label class="field-label" style="margin-top:0">Jahr</label>
+            <input type="number" id="jahr" value="2026" oninput="refresh()">
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ② EINLEITUNG / AKTION -->
+    <div class="sect">
+      <div class="sect-toggle" id="tog-uvod" onclick="toggleSect('uvod')">
+        <div class="sect-title"><span class="sect-num">2</span>Einleitung &amp; Aktion</div>
+        <span class="sect-caret" id="caret-uvod">▸</span>
+      </div>
+      <div id="body-uvod" style="display:none" class="sect-body">
+        <label class="field-label">Anrede</label>
+        <input type="text" id="anrede" value="Liebe Augenoptiker Innen, liebe Freunde," oninput="refresh()">
+        <label class="field-label">Unterzeile (rot)</label>
+        <input type="text" id="untertitel" value="" oninput="refresh()">
+        <label class="field-label">Aktionstitel (groß)</label>
+        <input type="text" id="aktion-titel" value="Aktionsangebot" oninput="refresh()">
+        <div class="row2">
+          <div>
+            <label class="field-label">Gültig bis</label>
+            <input type="text" id="gueltig-bis" value="" oninput="refresh()">
+          </div>
+          <div>
+            <label class="field-label">A-Preis (Standard)</label>
+            <input type="text" id="apreis-default" value="" oninput="refresh()">
+          </div>
+        </div>
+        <label class="field-label">Laufband-Zeile (rosa Box)</label>
+        <input type="text" id="ticker" value="" oninput="refresh()">
+      </div>
+    </div>
+
+    <!-- ③ PRODUKTE (default open) -->
+    <div class="sect">
+      <div class="sect-toggle open" id="tog-produkty" onclick="toggleSect('produkty')">
+        <div class="sect-title">
+          <span class="sect-num">3</span>Produkte
+          <span class="sect-badge" id="sel-count">0</span>
+        </div>
+        <span class="sect-caret" id="caret-produkty">▾</span>
+      </div>
+      <div id="body-produkty" class="sect-body">
+
+        <div class="sect-sub" style="margin-top:0">Produkte</div>
+        <div class="mini-btns" style="margin-top:6px">
+          <button class="mini-btn" onclick="loadFromAPI()">↻ Produkte aktualisieren</button>
+        </div>
+        <div class="api-status" id="api-status">Bitte anmelden.</div>
+
+        <!-- Filter -->
+        <div id="filter-sect" style="display:none">
+          <hr class="sect-hr">
+          <div class="sect-sub">Suchen &amp; filtern</div>
+          <div class="search-wrap">
+            <span class="search-icon">⌕</span>
+            <input type="text" id="prod-search" placeholder="Marke, Modell, Nummer …" oninput="rebuildList()">
+          </div>
+          <div class="chip-row" id="kolekce-chips">
+            <span class="chip active" data-kolekce="">Alle</span>
+            <span class="chip" data-kolekce="dámské">Damen</span>
+            <span class="chip" data-kolekce="pánské">Herren</span>
+            <span class="chip" data-kolekce="dětské">Kinder</span>
+            <span class="chip" data-kolekce="dívčí">Mädchen</span>
+            <span class="chip" data-kolekce="chlapecké">Jungen</span>
+            <span class="chip" data-kolekce="unisex">Unisex</span>
+            <span class="chip" data-kolekce="junior">Junior</span>
+          </div>
+          <div style="font-size:10px;font-weight:700;color:#94a3b8;letter-spacing:1px;text-transform:uppercase;margin-bottom:4px;margin-top:8px;">Rahmenform</div>
+          <div class="chip-row" id="tvar-chips"></div>
+          <div style="font-size:10px;font-weight:700;color:#94a3b8;letter-spacing:1px;text-transform:uppercase;margin-bottom:4px;margin-top:8px;">Brillenform</div>
+          <div class="chip-row" id="bform-chips"></div>
+          <div style="font-size:10px;font-weight:700;color:#94a3b8;letter-spacing:1px;text-transform:uppercase;margin-bottom:4px;margin-top:8px;">Material</div>
+          <div class="chip-row" id="mat-chips"></div>
+          <div style="font-size:10px;font-weight:700;color:#94a3b8;letter-spacing:1px;text-transform:uppercase;margin-bottom:4px;margin-top:8px;">Farbe</div>
+          <div class="chip-row" id="color-chips"></div>
+          <div style="font-size:10px;font-weight:700;color:#94a3b8;letter-spacing:1px;text-transform:uppercase;margin-bottom:4px;margin-top:8px;">Eigenschaften</div>
+          <div class="chip-row">
+            <span class="chip" id="chip-flex" onclick="toggleFlex()">Flex</span>
+            <span class="chip" id="chip-multi" onclick="toggleMulti()">Multifokal</span>
+          </div>
+          <div style="font-size:10px;font-weight:700;color:#94a3b8;letter-spacing:1px;text-transform:uppercase;margin-bottom:4px;margin-top:8px;">Marken</div>
+          <div class="mini-btns">
+            <button class="mini-btn" onclick="toggleAllBrands(true)">Alle</button>
+            <button class="mini-btn" onclick="toggleAllBrands(false)">Keine</button>
+          </div>
+          <div class="check-group" id="brand-cb"></div>
+        </div>
+
+        <!-- Produkte auswählen -->
+        <div id="model-sect" style="display:none">
+          <hr class="sect-hr">
+          <div class="sect-sub">Für Newsletter auswählen <span id="prod-count" style="font-weight:400;color:#94a3b8;font-size:10px;"></span></div>
+          <div class="mini-btns">
+            <button class="mini-btn" onclick="selectAll(true)">Alle gefiltert</button>
+            <button class="mini-btn" onclick="clearSelection()" title="Alle ausgewählten Produkte entfernen – unabhängig vom aktiven Filter">Alle entfernen</button>
+          </div>
+          <div class="model-list" id="model-list">
+            <div class="no-models">Bitte zuerst Produkte von der API laden.</div>
+          </div>
+        </div>
+
+        <!-- Limit warning -->
+        <div class="limit-warn" id="limit-warn">
+          ⚠ Mehr als 20 Produkte — E-Mail könnte für manche E-Mail-Clients zu groß sein.
+        </div>
+
+        <!-- Konfiguration der ausgewählten Produkte -->
+        <div id="sel-config-wrap" style="display:none">
+          <hr class="sect-hr">
+          <div class="sect-sub">Reihenfolge, Preise &amp; Rubrik</div>
+          <div style="font-size:10px;color:#94a3b8;margin-bottom:8px;">Karten ziehen zum Umordnen. Leere Felder = Standardwert.</div>
+          <div id="sel-config"></div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- ④ BESTELLUNG & TEXTE -->
+    <div class="sect">
+      <div class="sect-toggle" id="tog-ceny" onclick="toggleSect('ceny')">
+        <div class="sect-title"><span class="sect-num">4</span>Bestellung &amp; Texte</div>
+        <span class="sect-caret" id="caret-ceny">▸</span>
+      </div>
+      <div id="body-ceny" style="display:none" class="sect-body">
+        <label class="field-label" for="pe-expiry">Testangebot gültig bis (lokale Zeit)</label>
+        <input type="datetime-local" id="pe-expiry" oninput="refresh()">
+        <p class="pe-test-note">Testbetrieb: nur Beispieldaten. E-Mail-Versand ist nicht verbunden.</p>
+        <div class="pe-offer-actions">
+        <button type="button" class="btn" id="pe-publish">Testlink erstellen</button>
+        <button type="button" class="btn" id="pe-close">Aktuellen Link schließen</button>
+        <button type="button" class="btn" id="pe-orders">Testanfragen anzeigen</button>
+        </div>
+        <input type="text" id="pe-link" readonly aria-label="Testlink">
+        <p id="pe-status" role="status"></p>
+        <pre id="pe-list" style="white-space:pre-wrap;overflow-wrap:anywhere"></pre>
+        <label class="field-label">Bestellliste .pdf (URL)</label>
+        <input type="text" id="pdf-url" placeholder="https://… (leer = Block ausblenden)" oninput="refresh()">
+        <label class="field-label">Bestellliste .xls (URL)</label>
+        <input type="text" id="xls-url" placeholder="https://… (leer = Block ausblenden)" oninput="refresh()">
+        <label class="field-label">Preishinweis</label>
+        <input type="text" id="preis-hinweis" value="Alle Preise inkl. MwSt." oninput="refresh()">
+        <label class="field-label">Vorrat-Hinweis</label>
+        <input type="text" id="vorrat" value="Verfügbarkeit wird separat bestätigt." oninput="refresh()">
+        <label class="field-label">Showroom-Text</label>
+        <textarea id="showroom" rows="5" oninput="refresh()"></textarea>
+        <label class="field-label">Auswahlsendung-Text</label>
+        <textarea id="auswahl" rows="6" oninput="refresh()"></textarea>
+        <label class="field-label">Abschluss (jede Zeile = eigene Zeile)</label>
+        <textarea id="abschluss" rows="4" oninput="refresh()">Mit freundlichen Grüßen
+Ihr Prague Eyewear Team</textarea>
+        <label class="field-label">Team-Foto (URL)</label>
+        <input type="text" id="team-img" value="" oninput="refresh()">
+        <label class="field-label">Bildunterschrift Team</label>
+        <input type="text" id="team-names" value="" oninput="refresh()">
+      </div>
+    </div>
+
+    <!-- ⑤ FUSSZEILE -->
+    <div class="sect">
+      <div class="sect-toggle" id="tog-pata" onclick="toggleSect('pata')">
+        <div class="sect-title"><span class="sect-num">5</span>Kontakt &amp; Fußzeile</div>
+        <span class="sect-caret" id="caret-pata">▸</span>
+      </div>
+      <div id="body-pata" style="display:none" class="sect-body">
+        <div class="row2">
+          <div>
+            <label class="field-label">Firmenname</label>
+            <input type="text" id="ftr-firma" value="Prague Eyewear GmbH" oninput="refresh()">
+          </div>
+          <div>
+            <label class="field-label">Geschäftsführung</label>
+            <input type="text" id="ftr-gf" value="Jiri Kaiser" oninput="refresh()">
+          </div>
+        </div>
+        <div class="row2">
+          <div>
+            <label class="field-label">Straße</label>
+            <input type="text" id="ftr-strasse" value="Mülhausenerstr. 79" oninput="refresh()">
+          </div>
+          <div>
+            <label class="field-label">PLZ / Ort</label>
+            <input type="text" id="ftr-ort" value="47839 Krefeld, Deutschland" oninput="refresh()">
+          </div>
+        </div>
+        <div class="row2">
+          <div>
+            <label class="field-label">Telefon</label>
+            <input type="text" id="ftr-tel" value="+49 178 36 37 664" oninput="refresh()">
+          </div>
+          <div>
+            <label class="field-label">Fax</label>
+            <input type="text" id="ftr-fax" value="" oninput="refresh()">
+          </div>
+        </div>
+        <div class="row2">
+          <div>
+            <label class="field-label">Kontakt 1 – Name</label>
+            <input type="text" id="ftr-name1" value="Vertrieb" oninput="refresh()">
+          </div>
+          <div>
+            <label class="field-label">Kontakt 1 – E-Mail</label>
+            <input type="text" id="ftr-email" value="vertrieb@prague-eyewear.de" oninput="refresh()">
+          </div>
+        </div>
+        <div class="row2">
+          <div>
+            <label class="field-label">Kontakt 2 – Name</label>
+            <input type="text" id="ftr-name2" value="" oninput="refresh()">
+          </div>
+          <div>
+            <label class="field-label">Kontakt 2 – E-Mail</label>
+            <input type="text" id="ftr-email2" value="" oninput="refresh()">
+          </div>
+        </div>
+        <label class="field-label">Web</label>
+        <input type="text" id="ftr-web" value="" oninput="refresh()">
+        <label class="field-label">Copyright-Zeile</label>
+        <input type="text" id="ftr-copy" value="Amtsgericht Krefeld · HRB 17105 · USt-IdNr. DE322113936" oninput="refresh()">
+      </div>
+    </div>
+
+    <!-- ⑥ E-MAIL -->
+    <div class="sect">
+      <div class="sect-toggle" id="tog-email" onclick="toggleSect('email')">
+        <div class="sect-title"><span class="sect-num">6</span>E-Mail (Betreff &amp; Vorschau)</div>
+        <span class="sect-caret" id="caret-email">▸</span>
+      </div>
+      <div id="body-email" style="display:none" class="sect-body">
+        <div style="font-size:10px;color:#94a3b8;margin-bottom:10px;line-height:1.6;">
+          Sichtbar im E-Mail-Client vor dem Öffnen der Nachricht. Leer = automatisch aus KW &amp; Aktionstitel.
+        </div>
+        <label class="field-label">Betreff</label>
+        <input type="text" id="email-subject" placeholder="AKTIONSANGEBOTE 2026 KW 39 JEDE FASSUNG 9,90 €" oninput="refresh()">
+        <label class="field-label">Vorschautext</label>
+        <input type="text" id="email-pretext" placeholder="Unser Mittwochs-Angebot: jede Fassung 9,90 €" oninput="refresh()">
+        <div style="margin-top:10px;padding:8px 10px;background:#f8fafc;border-radius:6px;font-size:10px;color:#64748b;line-height:1.7;">
+          <strong>📬 Vorschau:</strong><br>
+          <span id="subject-preview" style="font-weight:700;color:#1e293b;">–</span><br>
+          <span id="pretext-preview" style="color:#94a3b8;">–</span>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- /sidebar -->
+
+  <!-- PREVIEW -->
+  <div class="preview-pane">
+    <div class="preview-bar">
+      <strong>Vorschau</strong>
+      <span>· Echtzeit · <span id="preview-count">0 Produkte</span></span>
+    </div>
+    <iframe class="preview-frame" id="preview" sandbox="allow-same-origin allow-modals allow-popups allow-popups-to-escape-sandbox" srcdoc=""></iframe>
+  </div>
+</div>
+<div class="status" id="status"></div>
+
+<script>
+function isMobile(){return window.innerWidth<=768;}
+function initMobile(){
+  if(!isMobile())return;
+  document.documentElement.style.cssText='height:auto;overflow:auto;';
+  document.body.style.cssText+='height:auto;overflow:auto;';
+  document.body.removeAttribute('data-mob-view');
+}
+function toggleMobView(){
+  if(!isMobile())return;
+  const btn=document.getElementById('mob-toggle');
+  const isPreview=document.body.getAttribute('data-mob-view')==='preview';
+  if(isPreview){
+    document.body.removeAttribute('data-mob-view');
+    if(btn)btn.textContent='👁 Vorschau';
+  } else {
+    document.body.setAttribute('data-mob-view','preview');
+    if(btn)btn.textContent='✏️ Editor';
+    setTimeout(()=>{
+      const topbar=document.querySelector('.topbar');
+      const previewBar=document.querySelector('.preview-bar');
+      const frame=document.getElementById('preview');
+      if(topbar&&previewBar&&frame){
+        frame.style.height=(window.innerHeight-topbar.offsetHeight-previewBar.offsetHeight)+'px';
+      }
+    },50);
+  }
+}
+document.addEventListener('DOMContentLoaded',initMobile);
+window.addEventListener('resize',initMobile);
+// ════════════════════════════════════════════════════
+//  STATE
+// ════════════════════════════════════════════════════
+let ALL_PRODUCTS = [];
+const selected = new Set();           // Set of gm — for O(1) lookup
+let selectedOrder = [];               // ordered array of gm — for rendering order
+const productExtras = new Map();      // gm → { price, orig, rubrik, desc, badge, colorFilter }
+let activeKolekce = '';
+const LIMIT_WARN = 20;
+
+// ════════════════════════════════════════════════════
+//  UTILITIES
+// ════════════════════════════════════════════════════
+function esc(s) {
+  return String(s ?? '')
+    .replace(/&/g,'&amp;').replace(/</g,'&lt;')
+    .replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+function nl2br(s) { return esc(s).replace(/\r?\n/g,'<br>'); }
+function val(id) { const el = document.getElementById(id); return el ? el.value : ''; }
+function safeWebURL(value) {
+  const raw = String(value || '').trim();
+  if (!raw) return '';
+  try {
+    const url = new URL(raw);
+    return ['https:', 'http:'].includes(url.protocol) && !url.username && !url.password ? raw : '';
+  } catch(e) { return ''; }
+}
+function webHref(w) {
+  const raw = String(w || '').trim();
+  return safeWebURL(/^[a-z][a-z0-9+.-]*:/i.test(raw) ? raw : 'https://' + raw);
+}
+function renderFilterChips(el, entries, active, handler) {
+  el.replaceChildren(...entries.map(([value, label]) => {
+    const chip = document.createElement('span');
+    chip.className = 'chip' + (active === value ? ' active' : '');
+    chip.textContent = label;
+    chip.addEventListener('click', () => handler(value));
+    return chip;
+  }));
+}
+function imgUrl(fp) {
+  if (!fp) return null;
+  const clean = String(fp).replace(/\\/g, '/');
+  if (clean.includes('/')) return 'https://cz.mi-optics.cz/img-products/' + clean;
+  return `https://cz.mi-optics.cz/img-products/${clean.substring(0,2)}/${clean.substring(2,4)}/${clean}`;
+}
+
+// ────────────────────────────────────────────────────
+// Transform new DB export format → internal format
+// ────────────────────────────────────────────────────
+function transformNewFormat(raw) {
+  const KMAP = {'women':'dámské','men':'pánské','kids':'dětské','girls':'dívčí','boys':'chlapecké','unisex':'unisex','junior':'junior'};
+  const TMAP = {'fullrim':'celoobruba','halfrim':'poloobruba','rimless':'bez obruby','nylon':'nylon'};
+  const byModel = new Map();
+  raw.forEach(item => {
+    const key = (item.BrandName||'') + '__' + (item.C_GlobalModel||'');
+    const kv = {};
+    const farben = [];
+    (item.KategorieSlovnik||[]).forEach(k => {
+      if (!kv[k.Tkat]) kv[k.Tkat] = k;
+      if (k.Tkat === 'Rahmenfarbe' && k.Tval && !farben.includes(k.Tval)) farben.push(k.Tval);
+    });
+    // mehrere Rahmenfarben (z. B. schwarz + grau) → "schwarz grau"
+    const colorName = farben.join(' ') || item.C_barva || '';
+    const fp = (item.FilePath||'').replace(/\\/g,'/');
+    if (!byModel.has(key)) {
+      const kolVal = kv['Kollektion']?.hodnota || '';
+      const tvarVal = kv['Rahmentyp']?.hodnota || '';
+      byModel.set(key, {
+        gm: key.replace(/[^a-zA-Z0-9_\-]/g, '_'),
+        brand: item.BrandName||'',
+        modelName: (item.BrandName||'') + ' ' + (item.C_GlobalModel||''),
+        modelNum: item.C_GlobalModel||'',
+        specs: {
+          'Kolekce': KMAP[kolVal] || kolVal,
+          'Typ obruby': TMAP[tvarVal] || tvarVal,
+          'Brillenform': kv['Brillenform']?.Tval || '',
+          'Materiál': kv['Material']?.Tval || '',
+          'MatCode': kv['Material']?.hodnota || item.C_material || '',
+          'Šířka očnice': kv['Glasbreite']?.Tval || '',
+          'Šířka nosníku': kv['Stegbreite']?.Tval || '',
+          'Délka stranice': kv['Bügellänge [mm]']?.Tval || '',
+          'Flex': kv['Federscharnier']?.hodnota === '1' ? 'ANO' : '',
+          'Vhodné pro multifokál': kv['Gleitsichtbrillen']?.hodnota === '1' ? 'ANO' : '',
+        },
+        variants: []
+      });
+    }
+    // Vollständiger Code wie im Original: "HORSEFEATHERS TI 3107 TP1"
+    const model = item.C_GlobalModel||'', col = item.C_GlobalModelColor||'';
+    const code = col && model && !col.startsWith(model) ? model + ' ' + col : (col || model);
+    byModel.get(key).variants.push({ variantCode: [item.BrandName, code].filter(Boolean).join(' '), colorName, thumbImage: fp });
+  });
+  return [...byModel.values()];
+}
+
+function isNewFormat(data) {
+  return Array.isArray(data) && data.length > 0 && 'BrandName' in data[0] && 'KategorieSlovnik' in data[0];
+}
+const FALLBACK_IMG = 'data:image/svg+xml,' + encodeURIComponent(
+  '<svg xmlns="http://www.w3.org/2000/svg" width="300" height="150">' +
+  '<rect width="300" height="150" fill="#f1f5f9"/>' +
+  '<text x="150" y="80" text-anchor="middle" font-family="Arial" font-size="12" fill="#94a3b8">Kein Bild</text>' +
+  '</svg>'
+);
+const FAMILY_HEX = {schwarz:'#1e293b','weiß':'#f8fafc',braun:'#92400e',gold:'#d4a017',silber:'#cbd5e1',blau:'#2563eb','grün':'#22c55e',rot:'#ef4444',beige:'#e7d3b0',grau:'#94a3b8',rosa:'#f9a8d4',lila:'#a855f7',orange:'#f97316',gelb:'#facc15',transparent:'#e9eef5'};
+// Punkt mit allen Farben der Variante (z. B. blau | gold | transparent als Tortenstücke)
+function dotBackground(name) {
+  const l = (name||'').toLowerCase();
+  const cols = colorFamilies(name).map(f => FAMILY_HEX[f]).filter(Boolean);
+  if (/\bgun/.test(l)) cols.push('#64748b');
+  if (l.includes('havanna')) cols.push('#7c2d12');
+  if (!cols.length) return colorToBg(name);
+  if (cols.length === 1) return cols[0];
+  const step = 360 / cols.length;
+  return 'conic-gradient(' + cols.map((c,i) => `${c} ${i*step}deg ${(i+1)*step}deg`).join(',') + ')';
+}
+function colorToBg(name) {
+  const n = (name||'').toLowerCase();
+  if (n.includes('čern')||n.includes('black')||n.includes('schwarz')) return '#1e293b';
+  if (n.includes('bíl')||n.includes('white')||n.includes('weiß')||n.includes('weiss')) return '#e2e8f0';
+  if (n.includes('šed')||n.includes('grey')||n.includes('gray')||n.includes('grau')) return '#94a3b8';
+  if (n.includes('stříbrn')||n.includes('silver')||n.includes('silber')) return '#cbd5e1';
+  if (n.includes('zlat')||n.includes('gold')) return '#d97706';
+  if (n.includes('červen')||n.includes('red')||n.includes('rot')) return '#ef4444';
+  if (n.includes('tmavě modr')||n.includes('navy')||n.includes('dunkelblau')) return '#1e3a8a';
+  if (n.includes('modr')||n.includes('blue')||n.includes('blau')) return '#3b82f6';
+  if (n.includes('zelen')||n.includes('green')||n.includes('grün')) return '#22c55e';
+  if (n.includes('fialovo')||n.includes('purple')||n.includes('violet')||n.includes('lila')) return '#a855f7';
+  if (n.includes('hnědá')||n.includes('brown')||n.includes('havanna')||n.includes('braun')) return '#92400e';
+  if (n.includes('růžov')||n.includes('pink')||n.includes('rosa')) return '#ec4899';
+  if (n.includes('oranžov')||n.includes('orange')) return '#f97316';
+  if (n.includes('tyrkys')||n.includes('cyan')||n.includes('turquoise')||n.includes('türkis')) return '#06b6d4';
+  if (n.includes('transparent')) return '#e2e8f0';
+  if (n.includes('gun')||n.includes('metal')) return '#64748b';
+  return '#94a3b8';
+}
+
+// ─── Übersetzungen (gemeinsam für Liste + Newsletter) ───
+const KOLEKCE_DE = {'dámské':'Damen','pánské':'Herren','dětské':'Kinder','dívčí':'Mädchen','chlapecké':'Jungen','unisex':'Unisex','junior':'Junior'};
+const COLOR_DE = {'černá':'schwarz','bílá':'weiß','hnědá':'braun','zlatá':'gold','stříbrná':'silber','modrá':'blau','zelená':'grün','červená':'rot','béžová':'beige','šedá':'grau','šedivá':'grau','růžová':'rosa','fialová':'lila','oranžová':'orange','žlutá':'gelb','transparentní':'transparent','nude':'nude','gunmetal':'gunmetal'};
+function transColor(c) {
+  const l = (c||'').toLowerCase();
+  return COLOR_DE[l] || l.split(/[-\/\s]+/).map(w => COLOR_DE[w] || w).join(' ');
+}
+
+// Kürzel wie im Original-Newsletter (DA ES VR, HE AC VR …)
+const ABBR_KOL = {'dámské':'DA','pánské':'HE','unisex':'UNI','dětské':'JU','junior':'JU','dívčí':'JU','chlapecké':'JU'};
+const ABBR_MAT = {'acetát':'AC','kov':'ES','nerez':'ES','titan':'TI','memory titan':'TI','ultem':'UL','nylon':'NY','hliník':'AL','polykarbonát':'PC'};
+const ABBR_TYP = {'celoobruba':'VR','plný rámeček':'VR','poloobruba':'NY','poloobroučky':'NY','nylon':'NY','bez obruby':'RL','bezrámečkové':'RL'};
+function productAbbr(sp) {
+  const k = ABBR_KOL[(sp['Kolekce']||'').toLowerCase()] || '';
+  // Material-Kürzel direkt aus der API (TI, TR, AC …), sonst über Übersetzungstabelle
+  const m = (sp['MatCode']||'').toUpperCase() || ABBR_MAT[(sp['Materiál rámečku']||sp['Materiál']||'').toLowerCase()] || '';
+  const t = ABBR_TYP[(sp['Typ obruby']||'').toLowerCase()] || '';
+  return [k, m, t === m ? '' : t].filter(Boolean).join(' ');
+}
+
+// Automatische Rubrik (Zwischenüberschrift) wie im Original
+function autoRubrik(p) {
+  const sp = p.specs || {};
+  const kol = (sp['Kolekce']||'').toLowerCase();
+  const typ = (sp['Typ obruby']||'').toLowerCase();
+  const mat = (sp['Materiál rámečku']||sp['Materiál']||'').toLowerCase();
+  if (['dětské','junior','dívčí','chlapecké'].includes(kol)) return 'MODELLE für KINDER und JUGENDLICHE';
+  if (['poloobruba','poloobroučky','nylon'].includes(typ)) return 'MODELLE mit NYLORRAND für DAMEN und HERREN';
+  if (typ.startsWith('bez') || typ.startsWith('bezrám')) return 'RANDLOSE MODELLE für DAMEN und HERREN';
+  if (mat === 'acetát' || mat.startsWith('acetat') || (sp['MatCode']||'').toUpperCase() === 'AC') return 'ACETATMODELLE für DAMEN und HERREN';
+  if (['celoobruba','plný rámeček'].includes(typ)) return 'VOLLRANDMODELLE für DAMEN und HERREN';
+  return 'WEITERE MODELLE';
+}
+
+// ════════════════════════════════════════════════════
+//  COLLAPSIBLE SECTIONS
+// ════════════════════════════════════════════════════
+function toggleSect(id) {
+  const body = document.getElementById('body-'+id);
+  const caret = document.getElementById('caret-'+id);
+  const tog = document.getElementById('tog-'+id);
+  if (!body) return;
+  const isOpen = body.style.display !== 'none';
+  body.style.display = isOpen ? 'none' : '';
+  if (caret) caret.textContent = isOpen ? '▸' : '▾';
+  if (tog) tog.classList.toggle('open', !isOpen);
+}
+
+// ════════════════════════════════════════════════════
+//  LOADING  (nur API – keine Fallback-Daten)
+// ════════════════════════════════════════════════════
+const PE_CONFIG = window.PE_CONFIG || {};
+const PRODUCTS_ENDPOINT = PE_CONFIG.productsEndpoint || '';
+const NEWSLETTER_UID = PE_CONFIG.adminUid || '';
+let newsletterAuth = null;
+let newsletterUser = null;
+let productRequest = null;
+let productGeneration = 0;
+let suspendedWork = null;
+
+function authMessage(text, error=false) {
+  const el = document.getElementById('auth-message');
+  el.textContent = text;
+  el.dataset.error = String(error);
+}
+
+function lockNewsletter(message='Bitte melden Sie sich an.', error=false) {
+  const previouslySignedIn = !!newsletterUser;
+  newsletterUser = null;
+  window.clearOfferAdmin?.();
+  ++productGeneration;
+  if (productRequest) productRequest.abort();
+  productRequest = null;
+  // Keep unsaved work only in this tab's memory, restore after own-account login.
+  // Explicitly saved drafts in localStorage are left untouched.
+  if (previouslySignedIn) {
+    suspendedWork = {
+      fields: Object.fromEntries(FIELD_IDS.map(id => [id, val(id)])),
+      order: [...selectedOrder], extras: [...productExtras.entries()]
+    };
+  }
+  clearProducts();
+  resetAll();
+  ['brand-cb','color-chips','tvar-chips','bform-chips','mat-chips'].forEach(id => {
+    document.getElementById(id)?.replaceChildren();
+  });
+  document.getElementById('app-shell').hidden = true;
+  document.getElementById('app-shell').inert = true;
+  document.getElementById('auth-screen').hidden = false;
+  document.getElementById('auth-password').value = '';
+  authMessage(message, error);
+}
+
+async function logoutNewsletter() {
+  if (!newsletterAuth) return;
+  lockNewsletter('Sie wurden abgemeldet. Gespeicherte Entwürfe bleiben in diesem Browser erhalten.');
+  try { await newsletterAuth.signOut(); }
+  catch(e) { authMessage('Abmelden konnte nicht abgeschlossen werden. Bitte erneut versuchen.', true); }
+}
+
+async function startNewsletterAuth() {
+  try {
+    if (!PE_CONFIG.firebase?.projectId || !NEWSLETTER_UID || !PRODUCTS_ENDPOINT) {
+      authMessage('Testprojekt noch nicht eingerichtet. Bitte neue Firebase-Konfiguration ergänzen.', true);
+      return;
+    }
+    if (PE_CONFIG.firebase.projectId === 'newsletter-builder-5f38c') throw new Error('Separate project required');
+    const [appSDK, authSDK] = await Promise.all([
+      import('https://www.gstatic.com/firebasejs/13.0.0/firebase-app.js'),
+      import('https://www.gstatic.com/firebasejs/13.0.0/firebase-auth.js')
+    ]);
+    const app = appSDK.initializeApp(PE_CONFIG.firebase, 'prague-eyewear-offers');
+    const auth = authSDK.getAuth(app);
+    newsletterAuth = {
+      signOut: () => authSDK.signOut(auth)
+    };
+    document.getElementById('auth-form').addEventListener('submit', async event => {
+      event.preventDefault();
+      const button = document.getElementById('auth-submit');
+      button.disabled = true;
+      authMessage('Anmeldung läuft …');
+      try {
+        const persistence = document.getElementById('auth-remember').checked
+          ? authSDK.browserLocalPersistence : authSDK.browserSessionPersistence;
+        await authSDK.setPersistence(auth, persistence);
+        await authSDK.signInWithEmailAndPassword(auth,
+          document.getElementById('auth-email').value.trim(),
+          document.getElementById('auth-password').value);
+        document.getElementById('auth-password').value = '';
+      } catch(e) {
+        const code = e?.code || '';
+        authMessage(code === 'auth/too-many-requests'
+          ? 'Zu viele Versuche. Bitte später erneut versuchen.'
+          : code === 'auth/network-request-failed'
+          ? 'Keine Verbindung zur Anmeldung. Bitte Internetverbindung prüfen.'
+          : 'Anmeldung nicht möglich. Bitte E-Mail und Passwort prüfen.', true);
+        document.getElementById('auth-password').value = '';
+      } finally { button.disabled = false; }
+    });
+    authSDK.onIdTokenChanged(auth, async user => {
+      if (!user) { lockNewsletter(); return; }
+      if (user.uid !== NEWSLETTER_UID) {
+        lockNewsletter('Dieses Konto ist nicht für diese Anwendung freigeschaltet.', true);
+        try { await authSDK.signOut(auth); } catch(e) {}
+        authMessage('Dieses Konto ist nicht für diese Anwendung freigeschaltet.', true);
+        return;
+      }
+      const newSession = newsletterUser?.uid !== user.uid;
+      newsletterUser = user;
+      document.getElementById('account-email').textContent = user.email || 'Mein Konto';
+      document.getElementById('account-identity').title = 'Angemeldet als ' + (user.email || 'Mein Konto');
+      document.getElementById('auth-password').value = '';
+      document.getElementById('auth-screen').hidden = true;
+      document.getElementById('app-shell').hidden = false;
+      document.getElementById('app-shell').inert = false;
+      if (newSession) {
+        if (suspendedWork) {
+          FIELD_IDS.forEach(id => { const el=document.getElementById(id); if(el) el.value=suspendedWork.fields[id]; });
+          suspendedWork.order.forEach(gm => selected.add(gm));
+          selectedOrder = [...suspendedWork.order];
+          productExtras.clear();
+          suspendedWork.extras.forEach(([gm, ex]) => productExtras.set(gm, ex));
+          suspendedWork = null;
+        }
+        await loadFromAPI();
+      }
+    }, () => lockNewsletter('Anmeldung nicht verfügbar. Bitte Seite neu laden.', true));
+    document.getElementById('auth-submit').disabled = false;
+    authMessage('Bitte melden Sie sich an.');
+  } catch(e) {
+    lockNewsletter('Anmeldung konnte nicht geladen werden. Bitte Verbindung prüfen und die Seite neu laden.', true);
+  }
+}
+
+function apiStatus(msg, kind) {
+  const el = document.getElementById('api-status');
+  if (!el) return;
+  el.textContent = msg;
+  el.className = 'api-status' + (kind ? ' ' + kind : '');
+}
+
+function unwrapProducts(d) {
+  if (Array.isArray(d)) return d;
+  if (d && typeof d === 'object') {
+    for (const k of ['data','items','products','result']) {
+      if (Array.isArray(d[k])) return d[k];
+    }
+    const first = Object.values(d).find(Array.isArray);
+    if (first) return first;
+  }
+  return [];
+}
+
+async function loadFromAPI() {
+  const user = newsletterUser;
+  if (!user || user.uid !== NEWSLETTER_UID) {
+    apiStatus('Bitte zuerst anmelden.', 'err');
+    return false;
+  }
+  const generation = ++productGeneration;
+  if (productRequest) productRequest.abort();
+  const controller = new AbortController();
+  productRequest = controller;
+  const timeout = setTimeout(() => controller.abort(), 60000);
+  apiStatus('Produkte werden geladen …');
+  try {
+    const idToken = await user.getIdToken();
+    if (generation !== productGeneration || newsletterUser?.uid !== user.uid) return false;
+    const response = await fetch(PRODUCTS_ENDPOINT, {
+      method: 'GET', redirect: 'error', credentials: 'omit', cache: 'no-store',
+      headers: {Authorization: 'Bearer ' + idToken, Accept: 'application/json'},
+      signal: controller.signal
+    });
+    if (generation !== productGeneration || newsletterUser?.uid !== user.uid) return false;
+    if (response.status === 401 || response.status === 403) {
+      await logoutNewsletter();
+      authMessage('Sitzung abgelaufen oder Zugriff nicht erlaubt. Bitte erneut anmelden.', true);
+      return false;
+    }
+    if (!response.ok) throw new Error('Produktdienst nicht verfügbar (HTTP ' + response.status + ').');
+    const data = unwrapProducts(await response.json());
+    if (generation !== productGeneration || newsletterUser?.uid !== user.uid) return false;
+    if (!data.length) throw new Error('Keine Produkte empfangen.');
+    onProductsLoaded(data);
+    apiStatus('✓ ' + ALL_PRODUCTS.length + ' Modelle geladen · ' + new Date().toLocaleTimeString('de-DE'), 'ok');
+    return true;
+  } catch(e) {
+    if (generation !== productGeneration) return false;
+    clearProducts();
+    apiStatus(e.name === 'AbortError'
+      ? 'Laden hat zu lange gedauert. Bitte erneut versuchen.'
+      : e instanceof TypeError ? 'Keine Verbindung zum Produktdienst. Bitte erneut versuchen.' : e.message, 'err');
+    return false;
+  } finally {
+    clearTimeout(timeout);
+    if (productRequest === controller) productRequest = null;
+  }
+}
+
+function clearProducts() {
+  ALL_PRODUCTS = [];
+  document.getElementById('filter-sect').style.display = 'none';
+  document.getElementById('model-sect').style.display = 'none';
+  const pc = document.getElementById('prod-count');
+  if (pc) pc.textContent = '';
+  document.getElementById('model-list').innerHTML = '<div class="no-models">Keine Daten – bitte zuerst von der API laden.</div>';
+  rebuildSelConfig();
+  updateCount();
+  refresh();
+}
+
+function updateSubjectPreview() {
+  document.getElementById('subject-preview').textContent = val('email-subject') || autoSubject();
+  document.getElementById('pretext-preview').textContent = val('email-pretext') || '–';
+}
+
+function init() {
+  document.getElementById('kolekce-chips').addEventListener('click', e => {
+    const chip = e.target.closest('.chip[data-kolekce]');
+    if (!chip) return;
+    document.querySelectorAll('#kolekce-chips .chip').forEach(c => c.classList.remove('active'));
+    chip.classList.add('active');
+    activeKolekce = chip.dataset.kolekce;
+    rebuildList();
+  });
+
+  refresh();
+
+  try {
+    ['nb_api_token','nb_api_url','nb_api_remember_v1','nl_products_cache'].forEach(key => localStorage.removeItem(key));
+  } catch(e) {}
+  clearProducts();
+  startNewsletterAuth();
+}
+
+function onProductsLoaded(data) {
+  const raw = Array.isArray(data) ? data : [];
+  ALL_PRODUCTS = isNewFormat(raw) ? transformNewFormat(raw) : raw;
+  document.getElementById('filter-sect').style.display = '';
+  document.getElementById('model-sect').style.display = '';
+  const pc = document.getElementById('prod-count');
+  if (pc) pc.textContent = '(' + ALL_PRODUCTS.length + ' Modelle geladen)';
+  buildBrandCheckboxes();
+  buildTvarChips();
+  buildBformChips();
+  buildMatChips();
+  buildColorChips();
+  rebuildList();
+  rebuildSelConfig();
+  refresh();
+}
+
+// ════════════════════════════════════════════════════
+//  FILTER CHIPS
+// ════════════════════════════════════════════════════
+let activeTvar  = '';
+let activeMat   = '';
+let filterFlex  = false;
+let filterMulti = false;
+let activeColor = '';
+
+const COLOR_DE_MAP = {'černá':'schwarz','bílá':'weiß','hnědá':'braun','zlatá':'gold','stříbrná':'silber','modrá':'blau','zelená':'grün','červená':'rot','béžová':'beige','šedá':'grau','šedivá':'grau','růžová':'rosa','fialová':'lila','oranžová':'orange','žlutá':'gelb','transparentní':'transparent'};
+// Alle Farbfamilien einer Variante (z. B. "gold blau" → ['gold','blau'])
+function colorFamilies(name) {
+  const l = (name||'').toLowerCase();
+  const out = [];
+  for (const [cz,de] of Object.entries(COLOR_DE_MAP)) { if (l.includes(cz) && !out.includes(de)) out.push(de); }
+  for (const de of Object.values(COLOR_DE_MAP)) { if (l.includes(de) && !out.includes(de)) out.push(de); }
+  // "dunkelblau" o. ä. enthält "blau" → wird oben schon erkannt
+  return out;
+}
+function colorFamily(name) { return colorFamilies(name)[0] || null; }
+function hasColor(v, fam) { return !fam || colorFamilies(v.colorName).includes(fam); }
+function buildColorChips() {
+  const families = [...new Set(ALL_PRODUCTS.flatMap(p=>(p.variants||[]).flatMap(v=>colorFamilies(v.colorName))))].sort();
+  const el = document.getElementById('color-chips');
+  if (!el) return;
+  renderFilterChips(el, [['','Alle'], ...families.map(f => [f,f])], activeColor, setColor);
+}
+function setColor(v) { activeColor=v; buildColorChips(); rebuildList(); }
+
+const TVAR_DE = {
+  'bez obruby':'Randlos','bezrámečkové':'Randlos','bezrámečkové závěsné':'Randlos (hängend)',
+  'celoobruba':'Vollrand','plný rámeček':'Vollrand',
+  'poloobruba':'Halbrand','poloobroučky':'Halbrand'
+};
+const MAT_DE = {
+  'acetát':'Acetat','hliník':'Aluminium','kov':'Metall',
+  'polykarbonát':'Polykarbonat','titan':'Titan','memory titan':'Memory-Titan',
+  'nerez':'Edelstahl','nylon':'Nylon','ultem':'Ultem'
+};
+
+let activeBform = '';
+function buildBformChips() {
+  const vals = [...new Set(ALL_PRODUCTS.map(p=>(p.specs||{})['Brillenform']||'').filter(Boolean))].sort();
+  const el = document.getElementById('bform-chips');
+  if (!el) return;
+  renderFilterChips(el, [['','Alle'], ...vals.map(v=>[v,v])], activeBform, setBform);
+}
+function setBform(v){ activeBform=v; buildBformChips(); rebuildList(); }
+
+function buildTvarChips() {
+  const vals = [...new Set(ALL_PRODUCTS.map(p => (p.specs||{})['Typ obruby']||'').filter(Boolean))].sort();
+  const el = document.getElementById('tvar-chips');
+  if (!el) return;
+  renderFilterChips(el, [['','Alle'], ...vals.map(v=>[v, TVAR_DE[v.toLowerCase()]||TVAR_DE[v]||v])], activeTvar, setTvar);
+}
+function setTvar(v) { activeTvar = v; buildTvarChips(); rebuildList(); }
+
+function buildMatChips() {
+  const vals = [...new Set(ALL_PRODUCTS.map(p => {
+    const sp = p.specs||{};
+    return (sp['Materiál rámečku']||sp['Materiál']||'');
+  }).filter(Boolean))].sort();
+  const el = document.getElementById('mat-chips');
+  if (!el) return;
+  renderFilterChips(el, [['','Alle'], ...vals.map(v=>[v, MAT_DE[v.toLowerCase()]||MAT_DE[v]||v])], activeMat, setMat);
+}
+function setMat(v) { activeMat = v; buildMatChips(); rebuildList(); }
+function toggleFlex() {
+  filterFlex = !filterFlex;
+  document.getElementById('chip-flex').classList.toggle('active', filterFlex);
+  rebuildList();
+}
+function toggleMulti() {
+  filterMulti = !filterMulti;
+  document.getElementById('chip-multi').classList.toggle('active', filterMulti);
+  rebuildList();
+}
+
+// ════════════════════════════════════════════════════
+//  BRAND CHECKBOXES
+// ════════════════════════════════════════════════════
+function buildBrandCheckboxes() {
+  const brands = [...new Set(ALL_PRODUCTS.map(p => p.brand))].sort();
+  document.getElementById('brand-cb').innerHTML = brands.map(b => `
+    <label class="check-row">
+      <input type="checkbox" data-brand value="${esc(b)}" checked onchange="rebuildList()">
+      <span>${esc(b)}</span>
+    </label>`).join('');
+}
+function toggleAllBrands(on) {
+  document.querySelectorAll('[data-brand]').forEach(el => el.checked = on);
+  rebuildList();
+}
+function getCheckedBrands() {
+  return [...document.querySelectorAll('[data-brand]:checked')].map(el => el.value);
+}
+
+// ════════════════════════════════════════════════════
+//  FILTERING
+// ════════════════════════════════════════════════════
+function filteredProducts() {
+  const search = (document.getElementById('prod-search')?.value || '').toLowerCase().trim();
+  const brands = getCheckedBrands();
+  return ALL_PRODUCTS.filter(p => {
+    if (brands.length && !brands.includes(p.brand)) return false;
+    if (activeKolekce) {
+      const k = ((p.specs||{})['Kolekce']||'').toLowerCase();
+      if (!k.includes(activeKolekce)) return false;
+    }
+    if (activeTvar && ((p.specs||{})['Typ obruby']||'') !== activeTvar) return false;
+    if (activeBform && ((p.specs||{})['Brillenform']||'') !== activeBform) return false;
+    if (activeMat) {
+      const sp = p.specs||{};
+      if ((sp['Materiál rámečku']||sp['Materiál']||'') !== activeMat) return false;
+    }
+    if (filterFlex  && (p.specs||{})['Flex'] !== 'ANO') return false;
+    if (filterMulti && (p.specs||{})['Vhodné pro multifokál'] !== 'ANO') return false;
+    if (activeColor && !(p.variants||[]).some(v => hasColor(v, activeColor))) return false;
+    if (search) {
+      const hay = (p.brand+' '+p.modelName+' '+p.modelNum).toLowerCase();
+      if (!search.split(/\s+/).every(t => hay.includes(t))) return false;
+    }
+    return true;
+  });
+}
+
+// ════════════════════════════════════════════════════
+//  MODEL LIST
+// ════════════════════════════════════════════════════
+const MAX_DISPLAY = 80;
+
+function rebuildList() {
+  const list = document.getElementById('model-list');
+  const items = filteredProducts();
+  const show  = items.slice(0, MAX_DISPLAY);
+
+  if (!items.length) {
+    list.innerHTML = '<div class="no-models">Keine Produkte für diese Filter.</div>';
+    return;
+  }
+
+  list.innerHTML = show.map(p => {
+    const on    = selected.has(p.gm);
+    const firstMatch = (p.variants||[]).find(v => hasColor(v, activeColor)) || (p.variants||[])[0];
+    const thumb = firstMatch?.thumbImage;   // Vorschaubild passend zum Farbfilter
+    const url   = thumb ? imgUrl(thumb) : null;
+    const kolekceRaw = (p.specs||{})['Kolekce']||'';
+    const kolekce = KOLEKCE_DE[kolekceRaw.toLowerCase()]||kolekceRaw;
+    const filteredVars = (p.variants||[]).filter(v => hasColor(v, activeColor));
+    const varCount = filteredVars.length;
+    const sub = [kolekce, varCount+(varCount===1?' Farbe':' Farben')].filter(Boolean).join(' · ');
+    // jede Variante: geteilter Farbpunkt (alle Farben) + Code + vollständiger Farbname
+    const dots = filteredVars.slice(0,6).map(v => {
+      const code = (v.variantCode||'').split(' ').pop();
+      return `<div class="var-row" title="${esc(v.colorName)}"><span class="var-dot" style="background:${dotBackground(v.colorName)}"></span><span class="var-name"><b>${esc(code)}</b> ${esc(transColor(v.colorName||''))}</span></div>`;
+    }).join('') + (filteredVars.length > 6 ? `<div class="var-name">+ ${filteredVars.length-6} weitere</div>` : '');
+    const imgTag = url
+      ? `<img class="model-thumb" src="${esc(url)}" alt="" loading="lazy" onerror="this.onerror=null;this.src='data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7'">`
+      : `<div class="model-thumb"></div>`;
+
+    return `<div class="model-item${on?' on':''}" data-gm="${esc(p.gm)}">
+      ${imgTag}
+      <div class="model-item-info">
+        <div class="model-brand">${esc(p.brand)}</div>
+        <div class="model-name">${esc(p.modelName)}</div>
+        <div class="model-sub">${esc(sub)}</div>
+        <div class="var-dots">${dots}</div>
+      </div>
+      <div class="model-add">${on?'✓':'+'}</div>
+    </div>`;
+  }).join('');
+
+  list.querySelectorAll('.model-item').forEach((el, i) => {
+    el.addEventListener('click', () => toggleProd(show[i].gm, el));
+  });
+
+  if (items.length > MAX_DISPLAY) {
+    list.insertAdjacentHTML('beforeend', `<div class="more-label">… und weiteren ${items.length - MAX_DISPLAY} Produkten · Suche verfeinern</div>`);
+  }
+  updateCount();
+}
+
+function newExtras(colorFilter) {
+  return { price:'', orig:'', rubrik:'', desc:'', badge:'', colorFilter: colorFilter || '' };
+}
+
+function toggleProd(gm, el) {
+  if (selected.has(gm)) {
+    selected.delete(gm);
+    selectedOrder = selectedOrder.filter(g => g !== gm);
+    el.classList.remove('on');
+    el.querySelector('.model-add').textContent = '+';
+  } else {
+    selected.add(gm);
+    selectedOrder.push(gm);
+    el.classList.add('on');
+    el.querySelector('.model-add').textContent = '✓';
+    // Farbfilter beim Hinzufügen immer übernehmen (auch wenn das Produkt schon einmal drin war)
+    if (!productExtras.has(gm)) productExtras.set(gm, newExtras(activeColor));
+    else productExtras.get(gm).colorFilter = activeColor;
+  }
+  updateCount();
+  rebuildSelConfig();
+  refresh();
+}
+
+function updateCount() {
+  const n = selected.size;
+  document.getElementById('sel-count').textContent = n;
+  document.getElementById('preview-count').textContent = n + ' Produkt' + (n!==1?'e':'');
+  const warn = document.getElementById('limit-warn');
+  if (warn) warn.classList.toggle('show', n > LIMIT_WARN);
+}
+
+// Entfernt ALLE ausgewählten Produkte – auch die, die der aktuelle Filter gerade ausblendet
+function clearSelection() {
+  selected.clear();
+  selectedOrder = [];
+  rebuildList();
+  rebuildSelConfig();
+  updateCount();
+  refresh();
+}
+
+function selectAll(on) {
+  filteredProducts().forEach(p => {
+    if (on) {
+      if (!selected.has(p.gm)) {
+        selected.add(p.gm);
+        selectedOrder.push(p.gm);
+        if (!productExtras.has(p.gm)) productExtras.set(p.gm, newExtras(activeColor));
+        else productExtras.get(p.gm).colorFilter = activeColor;
+      }
+    } else {
+      selected.delete(p.gm);
+      selectedOrder = selectedOrder.filter(g => g !== p.gm);
+    }
+  });
+  rebuildList();
+  rebuildSelConfig();
+  refresh();
+}
+
+// ════════════════════════════════════════════════════
+//  SELECTED PRODUCTS CONFIG (drag, badge, preise, rubrik)
+// ════════════════════════════════════════════════════
+let dragSrcGm = null;
+
+function rebuildSelConfig() {
+  const wrap = document.getElementById('sel-config-wrap');
+  const cont = document.getElementById('sel-config');
+  if (!wrap || !cont) return;
+
+  const selProds = selectedOrder.map(gm => ALL_PRODUCTS.find(p => p.gm === gm)).filter(Boolean);
+  if (!selProds.length) { wrap.style.display = 'none'; cont.innerHTML = ''; return; }
+
+  const defPrice = val('apreis-default') || '';
+  wrap.style.display = '';
+  cont.innerHTML = selProds.map(p => {
+    const ex = Object.assign(newExtras(), productExtras.get(p.gm) || {});
+    return `<div class="sel-card" draggable="true" data-gm="${esc(p.gm)}">
+      <div class="sel-card-top">
+        <span class="drag-handle">⠿</span>
+        <div class="sel-card-info">
+          <div class="sel-card-brand">${esc(p.brand)}</div>
+          <div class="sel-card-name">${esc(p.modelName)}</div>
+        </div>
+      </div>
+      <div class="badge-btns">
+        <button class="badge-btn${ex.badge==='NEU'?' active-neu':''}" data-badge="NEU">NEU</button>
+        <button class="badge-btn${ex.badge==='SALE'?' active-sale':''}" data-badge="SALE">SALE</button>
+        <button class="badge-btn" style="${ex.badge===''?'background:#f1f5f9;color:#64748b;border-color:#e2e8f0;':''}" data-badge="">—</button>
+      </div>
+      <div class="row2" style="margin-top:6px">
+        <div>
+          <label class="field-label" style="margin-top:0">Originalpreis</label>
+          <div class="currency-field"><input type="text" value="${esc(ex.orig)}" placeholder="27,90" data-extra="orig"><span aria-hidden="true">€</span></div>
+        </div>
+        <div>
+          <label class="field-label" style="margin-top:0">A-Preis</label>
+          <div class="currency-field"><input type="text" value="${esc(ex.price)}" placeholder="${esc(defPrice.replace(/\s*€$/, ''))}" data-extra="price"><span aria-hidden="true">€</span></div>
+        </div>
+      </div>
+      <label class="field-label">Farben im Newsletter</label>
+      <select style="width:100%;border:1px solid var(--border);border-radius:6px;padding:5px 8px;font-size:12px;background:inherit;color:inherit" data-extra="colorFilter">
+        <option value=""${!ex.colorFilter?' selected':''}>Alle Farben (${(p.variants||[]).length})</option>
+        ${[...new Set((p.variants||[]).flatMap(v=>colorFamilies(v.colorName)))].sort().map(f=>{
+          const n=(p.variants||[]).filter(v=>hasColor(v,f)).length;
+          return `<option value="${esc(f)}"${ex.colorFilter===f?' selected':''}>nur ${esc(f)} (${n})</option>`;}).join('')}
+      </select>
+      <label class="field-label">Rubrik</label>
+      <input type="text" value="${esc(ex.rubrik)}" placeholder="${esc(autoRubrik(p))}" data-extra="rubrik">
+      <label class="field-label">Zusatzzeile</label>
+      <input type="text" value="${esc(ex.desc)}" placeholder="z. B. kalt verglasen / incl. Sonnenclip" data-extra="desc">
+    </div>`;
+  }).join('');
+  cont.querySelectorAll('.sel-card').forEach((card, i) => {
+    const gm = selProds[i].gm;
+    card.addEventListener('dragstart', e => onDragStart(e, gm));
+    card.addEventListener('dragover', onDragOver);
+    card.addEventListener('dragleave', onDragLeave);
+    card.addEventListener('drop', e => onDrop(e, gm));
+    card.addEventListener('dragend', onDragEnd);
+    card.querySelectorAll('[data-badge]').forEach(btn => {
+      btn.addEventListener('click', () => setBadge(gm, btn.dataset.badge, btn));
+    });
+    card.querySelectorAll('[data-extra]').forEach(input => {
+      input.addEventListener(input.tagName === 'SELECT' ? 'change' : 'input', () => setExtra(gm, input.dataset.extra, input.value));
+    });
+  });
+}
+
+function setExtra(gm, key, value) {
+  if (!productExtras.has(gm)) productExtras.set(gm, newExtras());
+  productExtras.get(gm)[key] = value;
+  refresh();
+}
+
+function setBadge(gm, badge, btn) {
+  if (!productExtras.has(gm)) productExtras.set(gm, newExtras());
+  productExtras.get(gm).badge = badge;
+  const card = btn.closest('.sel-card');
+  card.querySelectorAll('.badge-btn').forEach(b => {
+    b.classList.remove('active-neu','active-sale');
+    b.style.background=''; b.style.color=''; b.style.borderColor='';
+  });
+  if (badge==='NEU') btn.classList.add('active-neu');
+  else if (badge==='SALE') btn.classList.add('active-sale');
+  else { btn.style.background='#f1f5f9'; btn.style.color='#64748b'; btn.style.borderColor='#e2e8f0'; }
+  refresh();
+}
+
+// ─── Drag & drop ─────────────────────────────────────
+function onDragStart(e, gm) {
+  dragSrcGm = gm;
+  e.currentTarget.classList.add('dragging');
+  e.dataTransfer.effectAllowed = 'move';
+}
+function onDragOver(e) {
+  e.preventDefault();
+  e.dataTransfer.dropEffect = 'move';
+  e.currentTarget.classList.add('drag-over');
+}
+function onDragLeave(e) { e.currentTarget.classList.remove('drag-over'); }
+function onDrop(e, targetGm) {
+  e.preventDefault();
+  e.currentTarget.classList.remove('drag-over');
+  if (dragSrcGm === null || dragSrcGm === targetGm) return;
+  const srcIdx = selectedOrder.indexOf(dragSrcGm);
+  const tgtIdx = selectedOrder.indexOf(targetGm);
+  if (srcIdx < 0 || tgtIdx < 0) return;
+  selectedOrder.splice(srcIdx, 1);
+  selectedOrder.splice(tgtIdx, 0, dragSrcGm);
+  rebuildSelConfig();
+  refresh();
+}
+function onDragEnd() {
+  dragSrcGm = null;
+  document.querySelectorAll('.sel-card').forEach(c => c.classList.remove('dragging','drag-over'));
+}
+
+// ════════════════════════════════════════════════════
+//  NEWSLETTER HTML GENERATOR
+//  Tabellen-Layout mit Inline-Styles (wie das Original
+//  des Brillengroßhandels) – funktioniert in Outlook,
+//  Seznam, Gmail usw.
+// ════════════════════════════════════════════════════
+const C_RED_HDR = '#FFFFFF';
+const C_RED     = '#547A9D';
+const C_GREY_BG = '#FFFFFF';
+const C_PINK    = '#F0F5FA';
+const C_LINE    = '#CBCBCB';
+const F_ARIAL   = "Arial,Helvetica,sans-serif";
+const F_VERD    = "Verdana,Geneva,sans-serif";
+
+function autoSubject() {
+  const jahr = val('jahr'), kw = val('kw'), titel = val('aktion-titel');
+  return `AKTIONSANGEBOTE ${jahr} KW ${kw}${titel ? ' ' + titel : ''}`.trim();
+}
+
+const HR = `<div style="text-align:center"><hr size="2" width="100%" align="center" style="border:0;border-top:1px solid #9a9a9a;border-bottom:1px solid #eeeeee;height:0;margin:6px 0"></div>`;
+
+function euroPrice(value) { return String(value).trim().replace(/\s*€$/, '').trim() + ' €'; }
+
+function buildProductCell(p, v, ex, web) {
+  const sp = p.specs || {};
+  const fbk = FALLBACK_IMG;
+  const vUrl = v.thumbImage ? imgUrl(v.thumbImage) : fbk;
+  const abbr = productAbbr(sp);
+  const oce = sp['Šířka očnice'] || '';
+  const nos = sp['Šířka nosníku'] || '';
+  const bgl = sp['Délka stranice [mm]'] || sp['Délka stranice'] || '';
+  const color = transColor(v.colorName || '');
+  const colorLine = [color, oce && nos ? `${oce}□${nos}` : '', bgl ? `BGL ${bgl}` : ''].filter(Boolean).join(' ');
+  const aPreis = ex.price || val('apreis-default') || '';
+  const badge = ex.badge === 'NEU'  ? `<strong style="color:${C_RED}">NEU</strong><br>`
+              : ex.badge === 'SALE' ? `<strong style="color:red">SALE</strong><br>` : '';
+
+  const lines = [
+    badge + esc(v.variantCode || p.modelName),
+    abbr ? esc(abbr) : '',
+    colorLine ? esc(colorLine) : '',
+    ex.desc ? esc(ex.desc) : '',
+    ex.orig ? `Originalpreis: ${esc(euroPrice(ex.orig))} -` : '',
+    aPreis ? `<strong style="font-family:${F_ARIAL};color:#000000">A-Preis: ${esc(euroPrice(aPreis))}</strong>` : ''
+  ].filter(Boolean).join('<br>\n');
+
+  return `<td width="33%" valign="top" align="center" style="width:33%;padding:8px 4px 4px 4px">
+  <a href="${esc(web)}" target="_blank" rel="noopener noreferrer" style="text-decoration:none"><img src="${esc(vUrl)}" width="260" alt="${esc(p.modelName + ' ' + color)}" style="display:block;margin:0 auto;width:100%;max-width:260px;height:auto;border:0"></a>
+  <p style="margin:8px 0 16px 0;text-align:center;line-height:18px;font-size:12px;font-family:${F_ARIAL};color:#333333">${lines}</p>
+</td>`;
+}
+
+function buildHTML() {
+  const kw        = val('kw');
+  const jahr      = val('jahr');
+  const logoUrl   = safeWebURL(val('logo-url')) || 'https://kaiserjiri.github.io/prague-eyewear-offers/assets/prague-eyewear.png';
+  const anrede    = val('anrede');
+  const untertitel= val('untertitel');
+  const titel     = val('aktion-titel');
+  const gueltig   = val('gueltig-bis');
+  const ticker    = val('ticker');
+  const pdfUrl    = safeWebURL(val('pdf-url'));
+  const xlsUrl    = safeWebURL(val('xls-url'));
+  const preisHinw = val('preis-hinweis');
+  const vorrat    = val('vorrat');
+  const showroom  = val('showroom');
+  const auswahl   = val('auswahl');
+  const abschluss = val('abschluss');
+  const teamImg   = safeWebURL(val('team-img'));
+  const teamNames = val('team-names');
+  const firma     = val('ftr-firma');
+  const gf        = val('ftr-gf');
+  const strasse   = val('ftr-strasse');
+  const ort       = val('ftr-ort');
+  const tel       = val('ftr-tel');
+  const fax       = val('ftr-fax');
+  const name1     = val('ftr-name1');
+  const mail1     = val('ftr-email');
+  const name2     = val('ftr-name2');
+  const mail2     = val('ftr-email2');
+  const webRaw    = val('ftr-web');
+  const web       = offerLink() || webHref(webRaw);
+  const copy      = val('ftr-copy');
+  const subject   = val('email-subject') || autoSubject();
+  const pretext   = val('email-pretext');
+
+  // ── Produkte nach Rubrik gruppieren (Reihenfolge = erste Erwähnung) ──
+  const selProds = selectedOrder.map(gm => ALL_PRODUCTS.find(p => p.gm === gm)).filter(Boolean);
+  const groups = new Map();
+  selProds.forEach(p => {
+    const ex = Object.assign(newExtras(), productExtras.get(p.gm) || {});
+    const rub = (ex.rubrik || autoRubrik(p)).trim();
+    if (!groups.has(rub)) groups.set(rub, []);
+    const vars = (p.variants||[]).filter(v => hasColor(v, ex.colorFilter));
+    // jedes Modell bekommt eigene Zeile(n) – Farbvarianten nebeneinander
+    if (vars.length) groups.get(rub).push(vars.map(v => ({ p, v, ex })));
+  });
+
+  let gridRows = '';
+  groups.forEach((models, rub) => {
+    gridRows += `<tr><td colspan="3" align="center" style="padding:10px 0 14px 0">
+  <p style="margin:0;text-align:center;font-size:16px;font-family:Georgia,'Times New Roman',serif;color:#333333">${esc(rub)}</p>
+</td></tr>\n`;
+    models.forEach(cells => {
+      for (let i = 0; i < cells.length; i += 3) {
+        const row = cells.slice(i, i + 3).map(c => buildProductCell(c.p, c.v, c.ex, web));
+        while (row.length < 3) row.push('<td width="33%" style="width:33%">&nbsp;</td>');
+        gridRows += `<tr>${row.join('\n')}</tr>\n`;
+      }
+    });
+  });
+
+  const productBlock = gridRows
+    ? `<table role="presentation" border="0" cellspacing="0" cellpadding="0" width="100%" style="width:100%">
+${gridRows}</table>`
+    : `<p style="text-align:center;padding:40px 0;font-family:${F_ARIAL};font-size:13px;color:#999999">Keine Produkte ausgewählt – links in der Liste anklicken.</p>`;
+
+  const pVerdB = (inner, extra='') => `<p style="margin:0 0 14px 0;font-size:13px;line-height:18px;font-weight:bold;font-family:${F_VERD};color:#000000;${extra}">${inner}</p>`;
+  const pCenter = inner => `<p style="margin:6px 0;text-align:center;font-size:16px;line-height:22px;font-family:${F_VERD};color:#303030">${inner}</p>`;
+  const link = (href, text, style='') => `<a href="${esc(href)}" target="_blank" rel="noopener noreferrer" style="color:#000000;${style}">${text}</a>`;
+
+  const pretextTag = pretext
+    ? `<div style="display:none;font-size:1px;color:#ffffff;line-height:1px;max-height:0;max-width:0;opacity:0;overflow:hidden;">${esc(pretext)}&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;</div>`
+    : '';
+
+  const bestellBlock = (pdfUrl || xlsUrl) ? `
+<tr><td style="padding:1px">
+  ${pdfUrl ? `<p style="margin:0 0 6px 0;font-size:12px;line-height:18px;font-family:${F_ARIAL}">${link(pdfUrl, '<strong>Bestellliste .pdf</strong>')}</p>
+  ${pVerdB('öffnen (indem Sie auf Bestellliste .pdf klicken) - ausdrucken -<br>Kundennummer bzw. Anschrift und Bestellmenge eintragen - zurückfaxen')}` : ''}
+  ${xlsUrl ? `<p style="margin:0 0 6px 0;font-size:12px;line-height:18px;font-family:${F_ARIAL}">${link(xlsUrl, '<strong>Bestellliste .xls</strong>')}</p>
+  ${pVerdB('öffnen (indem Sie auf Bestellliste .xls klicken) - Bestellmenge eintragen - per&nbsp; email senden')}` : ''}
+</td></tr>` : '';
+
+  const abschlussHTML = abschluss.split(/\r?\n/).filter(l => l.trim()).map(l => pCenter(esc(l))).join('\n');
+
+  return `<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<title>${esc(subject)}</title>
+</head>
+<body style="margin:0;padding:0;background:#ffffff;-webkit-text-size-adjust:100%">
+${pretextTag}
+<table role="presentation" border="0" cellspacing="0" cellpadding="0" width="100%" style="width:100%;background:#ffffff">
+<tr><td align="center" style="padding:15px 0">
+
+<table role="presentation" border="0" cellspacing="0" cellpadding="0" width="900" style="width:100%;max-width:900px">
+
+  <!-- LOGO -->
+  <tr><td align="center" style="background:${C_RED_HDR};padding:32px 24px;border-bottom:3px solid #7c9abc">
+    ${logoUrl ? `<img src="${esc(logoUrl)}" width="210" alt="${esc(firma)}" style="display:block;width:210px;max-width:100%;height:auto;border:0">` : `<div style="padding:30px;font-family:${F_VERD};font-size:28px;color:#ffffff">${esc(firma)}</div>`}
+  </td></tr>
+
+  <!-- INHALT -->
+  <tr><td style="background:${C_GREY_BG};padding:16px">
+
+    <div style="border-bottom:1px solid ${C_LINE};padding-bottom:4px;margin-bottom:12px">&nbsp;</div>
+
+    <div style="border-bottom:1px solid ${C_LINE};padding:0 0 4px 0">
+      <p style="margin:0 0 4px 0;font-size:18px;font-weight:bold;font-family:${F_ARIAL};color:#000000">${esc(anrede)}</p>
+      ${untertitel ? `<p style="margin:0 0 4px 0;font-size:16px;font-weight:bold;font-family:${F_ARIAL};color:${C_RED}">${esc(untertitel)}</p>` : ''}
+    </div>
+
+    ${titel ? `<h1 style="margin:20px 0;text-align:center;font-size:32px;font-weight:bold;font-family:${F_VERD};color:#303030">${esc(titel)}</h1>` : ''}
+
+    ${gueltig ? `<div style="border-bottom:1px solid ${C_LINE};padding:0 0 4px 0">
+      <p style="margin:0 0 4px 0;font-size:16px;font-weight:bold;font-family:${F_ARIAL};color:#000000">AKTIONSRABATT GÜLTIG BIS&nbsp;&nbsp; ${esc(gueltig)}</p>
+    </div>` : ''}
+
+    <p style="margin:0 0 16px 0;line-height:18px;font-size:12px">&nbsp;</p>
+
+    <table role="presentation" border="0" cellspacing="0" cellpadding="0" width="98%" style="width:98%;background:${C_PINK}">
+
+      ${ticker ? `<tr><td style="padding:14px 8px 10px 8px">
+        <div style="border-bottom:1px solid ${C_LINE};padding-bottom:4px">
+          <p style="margin:0;font-size:16px;font-weight:bold;font-family:${F_ARIAL};color:red">&nbsp;${esc(ticker)}</p>
+        </div>
+      </td></tr>
+      <tr><td style="padding:1px">${HR}</td></tr>` : ''}
+
+      <tr><td style="padding:40px 4px 10px 4px">
+        ${offerLink() ? pVerdB(link(offerLink(), 'B2B-Angebot öffnen')) : ''}
+        ${pVerdB(`<br>Unsere emailadressen lauten:<br>
+          ${mail1 ? `${esc(name1)}: <a href="mailto:${esc(mail1)}" style="color:#333333;font-weight:normal">${esc(mail1)}</a><br>` : ''}
+          ${mail2 ? `${esc(name2)}:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <a href="mailto:${esc(mail2)}" style="color:#333333;font-weight:normal">${esc(mail2)}</a>` : ''}`)}
+        ${pVerdB(`${tel ? `Telefon: ${esc(tel)}<br>` : ''}${fax ? `FAX:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ${esc(fax)}` : ''}`)}
+      </td></tr>
+
+      ${bestellBlock}
+
+      <!-- PRODUKTE -->
+      <tr><td align="center" style="padding:1px">
+        ${productBlock}
+      </td></tr>
+
+      <!-- HINWEISE -->
+      <tr><td style="padding:0">${HR}${HR}${HR}</td></tr>
+      ${preisHinw ? `<tr><td>${pCenter(esc(preisHinw) + '&nbsp;')}</td></tr>` : ''}
+      ${vorrat ? `<tr><td>${pCenter(esc(vorrat) + '&nbsp;')}</td></tr>` : ''}
+      <tr><td style="padding:0">${HR}${HR}</td></tr>
+      ${showroom ? `<tr><td style="padding:4px 0">${pCenter(nl2br(showroom))}</td></tr>
+      <tr><td style="padding:0">${HR}${HR}</td></tr>` : ''}
+      ${auswahl ? `<tr><td style="padding:4px 0">${pCenter(nl2br(auswahl))}</td></tr>
+      <tr><td style="padding:0">${HR}</td></tr>` : ''}
+      <tr><td style="padding:4px 0">
+        ${abschlussHTML}
+        ${teamImg ? `<p style="margin:10px 0 0 0;text-align:center"><a href="${esc(web)}" target="_blank" rel="noopener noreferrer"><img src="${esc(teamImg)}" width="300" alt="${esc(teamNames)}" style="display:block;margin:0 auto;width:300px;max-width:100%;height:auto;border:0"></a></p>` : ''}
+        ${teamNames ? `<p style="margin:8px 0 16px 0;text-align:center;font-size:12px;line-height:18px;font-family:${F_ARIAL};color:#333333">${esc(teamNames)}</p>` : ''}
+      </td></tr>
+    </table>
+
+    <!-- KONTAKT -->
+    <div style="text-align:center;margin-top:16px"><hr size="2" width="100%" noshade style="border:0;border-top:2px solid #CC3333;height:0;margin:0"></div>
+    <p style="margin:10px 0 12px 0;text-align:center;line-height:18px;font-size:10px;font-family:${F_ARIAL};color:#333333">Haben Sie Anregungen, Kritikpunkte oder Fragen? Gerne würden wir von Ihnen hören,<br>
+      schreiben Sie uns doch einfach eine <a href="mailto:${esc(mail2 || mail1)}?subject=Newsletter%20Rueckmeldung" style="font-size:12px;color:${C_RED}">E-Mail</a> oder rufen Sie uns an!</p>
+    <table role="presentation" border="0" cellspacing="0" cellpadding="0" width="100%" style="width:100%">
+      <tr>
+        <td width="50%" align="center" valign="top" style="width:50%">
+          <p style="margin:0 0 12px 0;text-align:center;line-height:18px;font-size:10px;font-family:${F_ARIAL};color:#333333">${esc(firma)}<br>
+          ${gf ? `Geschäftsführung: ${esc(gf)}<br>` : ''}${esc(strasse)}<br>${esc(ort)}</p>
+        </td>
+        <td width="50%" align="center" valign="top" style="width:50%">
+          <p style="margin:0 0 12px 0;text-align:center;line-height:18px;font-size:10px;font-family:${F_ARIAL};color:#333333">
+          ${tel ? `Tel. ${esc(tel)}<br>` : ''}${fax ? `Fax ${esc(fax)}<br>` : ''}
+          ${mail1 ? `E-Mail <a href="mailto:${esc(mail1)}" style="font-size:12px;color:${C_RED}">${esc(mail1)}</a><br>` : ''}
+          ${webRaw ? `Web <a href="${esc(web)}" target="_blank" rel="noopener noreferrer" style="font-size:12px;color:${C_RED}">${esc(webRaw)}</a>` : ''}</p>
+        </td>
+      </tr>
+    </table>
+
+  </td></tr>
+
+  <!-- COPYRIGHT -->
+  ${copy ? `<tr><td align="center" style="padding:20px 0">
+    <p style="margin:0;text-align:center;line-height:18px;font-size:10px;font-family:${F_ARIAL};color:#151515">${esc(copy)}</p>
+  </td></tr>` : ''}
+
+  <!-- ABMELDUNG -->
+  <tr><td align="center" style="padding:0 0 15px 0">
+    <p style="margin:0;text-align:center;line-height:18px;font-size:10px;font-family:${F_VERD};color:#303030">Durch fehlerhafte Eintragungen von E-Mail-Adressen in unserer Datenbank kann es zu Irrläufern dieser Mail kommen. Das ist nicht beabsichtigt und wir sind für entsprechende Hinweise dankbar.<br>
+    Wenn Sie keine weiteren News &amp; Angebote in Form eines Newsletters beziehen wollen, schicken Sie uns einfach eine E-Mail an folgende Adresse:
+    <a href="mailto:${esc(mail2 || mail1)}?subject=Newsletter%20abmelden" style="color:#303030">${esc(mail2 || mail1)}</a></p>
+  </td></tr>
+
+</table>
+
+</td></tr>
+</table>
+</body>
+</html>`;
+}
+
+// ════════════════════════════════════════════════════
+//  PREVIEW + DOWNLOAD
+// ════════════════════════════════════════════════════
+function refresh() {
+  document.getElementById('preview').srcdoc = buildHTML();
+  updateSubjectPreview();
+}
+
+function downloadHTML() {
+  const kw = val('kw');
+  const jahr = val('jahr');
+  const html = buildHTML();
+  const blob = new Blob([html], { type: 'text/html;charset=utf-8' });
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = `newsletter_KW${kw}_${jahr}.html`;
+  document.body.appendChild(a); a.click(); a.remove();
+  showStatus(`newsletter_KW${kw}_${jahr}.html heruntergeladen!`);
+}
+
+// Kopiert den Newsletter als formatierten Inhalt (wie „Strg+C“ auf einer Webseite).
+// In Outlook, Gmail, Seznam, Thunderbird … einfach in eine neue E-Mail mit Strg+V einfügen.
+function emailBodyHTML() {
+  const full = buildHTML();
+  const m = full.match(/<body[^>]*>([\s\S]*)<\/body>/i);
+  let body = m ? m[1] : full;
+  // unsichtbaren Vorschautext entfernen – würde beim Einfügen sichtbar werden
+  body = body.replace(/<div style="display:none;[^"]*">[\s\S]*?<\/div>/i, '');
+  return body.trim();
+}
+
+async function copyForEmail() {
+  const body = emailBodyHTML();
+  const htmlDoc = '<html><head><meta charset="UTF-8"></head><body>' + body + '</body></html>';
+  const tmp = document.createElement('div');
+  tmp.innerHTML = body;
+  const plain = (tmp.innerText || tmp.textContent || '').replace(/\n{3,}/g, '\n\n').trim();
+
+  // 1) Moderne Clipboard-API (Chrome, Edge, Safari, Firefox ≥ 127)
+  try {
+    if (window.ClipboardItem && navigator.clipboard?.write) {
+      await navigator.clipboard.write([new ClipboardItem({
+        'text/html':  new Blob([htmlDoc], { type: 'text/html' }),
+        'text/plain': new Blob([plain],   { type: 'text/plain' })
+      })]);
+      showStatus('Newsletter kopiert! Jetzt neue E-Mail öffnen und Strg+V drücken.');
+      return;
+    }
+  } catch(e) { console.warn('ClipboardItem fehlgeschlagen, nutze Fallback:', e); }
+
+  // 2) Fallback: gerenderten Inhalt markieren und kopieren
+  const holder = document.createElement('div');
+  holder.contentEditable = 'true';
+  holder.style.cssText = 'position:fixed;left:-99999px;top:0;width:900px;background:#fff;';
+  holder.innerHTML = body;
+  document.body.appendChild(holder);
+  const range = document.createRange();
+  range.selectNodeContents(holder);
+  const sel = window.getSelection();
+  sel.removeAllRanges(); sel.addRange(range);
+  let ok = false;
+  try { ok = document.execCommand('copy'); } catch(e) {}
+  sel.removeAllRanges();
+  holder.remove();
+  showStatus(ok ? 'Newsletter kopiert! Jetzt neue E-Mail öffnen und Strg+V drücken.'
+                : 'Kopieren fehlgeschlagen — bitte HTML herunterladen.');
+}
+
+
+function exportPDF() {
+  const frame = document.getElementById('preview');
+  try {
+    frame.contentWindow.print();
+    showStatus('Druckdialog geöffnet — bitte "Als PDF speichern" wählen.');
+  } catch(e) {
+    showStatus('PDF: HTML-Datei im Browser öffnen und Strg+P drücken.');
+  }
+}
+
+// ════════════════════════════════════════════════════
+//  SAVE / LOAD DRAFT
+// ════════════════════════════════════════════════════
+const DRAFT_KEY = 'pe_offers_draft_v2';
+const FIELD_DEFAULTS = {};   // wird beim Start aus den HTML-Standardwerten befüllt
+const FIELD_IDS = ['logo-url','kw','jahr','anrede','untertitel','aktion-titel','gueltig-bis','apreis-default','ticker',
+  'pdf-url','xls-url','preis-hinweis','vorrat','showroom','auswahl','abschluss','team-img','team-names',
+  'ftr-firma','ftr-gf','ftr-strasse','ftr-ort','ftr-tel','ftr-fax','ftr-name1','ftr-email','ftr-name2','ftr-email2','ftr-web','ftr-copy',
+  'email-subject','email-pretext'];
+
+function saveDraft() {
+  const fields = {};
+  FIELD_IDS.forEach(id => { const el = document.getElementById(id); if (el) fields[id] = el.value; });
+  const draft = {
+    version: 3,
+    savedAt: new Date().toISOString(),
+    selectedOrder: [...selectedOrder],
+    productExtras: [...productExtras.entries()],
+    fields,
+  };
+  try {
+    localStorage.setItem(DRAFT_KEY, JSON.stringify(draft));
+    showStatus(`Entwurf gespeichert (${selectedOrder.length} Produkte) · ${new Date().toLocaleTimeString('de-DE')}`);
+  } catch(e) {
+    showStatus('Speichern fehlgeschlagen — localStorage nicht verfügbar.');
+  }
+}
+
+function loadDraft() {
+  try {
+    const raw = localStorage.getItem(DRAFT_KEY) || null;
+    if (!raw) { showStatus('Kein gespeicherter Entwurf gefunden.'); return; }
+    const draft = JSON.parse(raw);
+
+    if (draft.fields) {
+      Object.entries(draft.fields).forEach(([id, v]) => {
+        const el = document.getElementById(id);
+        if (FIELD_IDS.includes(id) && el && typeof v === 'string') el.value = v;
+      });
+    }
+
+    selected.clear();
+    selectedOrder = [];
+    productExtras.clear();
+    (draft.selectedOrder || []).forEach(gm => { selected.add(gm); selectedOrder.push(gm); });
+    (draft.productExtras || []).forEach(([gm, ex]) => productExtras.set(gm, Object.assign(newExtras(), ex)));
+
+    rebuildList();
+    rebuildSelConfig();
+    updateCount();
+    refresh();
+
+    const d = new Date(draft.savedAt);
+    showStatus(`Entwurf geladen (${selectedOrder.length} Produkte) · gespeichert ${d.toLocaleString('de-DE')}`);
+  } catch(e) {
+    showStatus('Entwurf konnte nicht geladen werden.');
+  }
+}
+
+// ════════════════════════════════════════════════════
+//  STATUS + RESET
+// ════════════════════════════════════════════════════
+function showStatus(msg) {
+  const s = document.getElementById('status');
+  s.textContent = '✓ ' + msg;
+  s.classList.add('show');
+  setTimeout(() => s.classList.remove('show'), 5000);
+}
+
+function resetAll() {
+  FIELD_IDS.forEach(id => {
+    const el = document.getElementById(id);
+    if (el && id in FIELD_DEFAULTS) el.value = FIELD_DEFAULTS[id];
+  });
+  selected.clear(); selectedOrder = []; productExtras.clear();
+  if (ALL_PRODUCTS.length) {
+    document.querySelectorAll('[data-brand]').forEach(el => el.checked = true);
+    const si = document.getElementById('prod-search');
+    if (si) si.value = '';
+    activeKolekce = '';
+    document.querySelectorAll('#kolekce-chips .chip').forEach((c,i) => c.classList.toggle('active',i===0));
+    rebuildList();
+  }
+  rebuildSelConfig(); updateCount(); refresh();
+}
+
+// ════════════════════════════════════════════════════
+window.addEventListener('DOMContentLoaded', () => {
+  FIELD_IDS.forEach(id => { const el = document.getElementById(id); if (el) FIELD_DEFAULTS[id] = el.defaultValue ?? el.value; });
+  document.getElementById('apreis-default').addEventListener('input', rebuildSelConfig);
+  init();
+});
+</script>
+
+</div><!-- app-shell -->
+</body>
+</html>
+
