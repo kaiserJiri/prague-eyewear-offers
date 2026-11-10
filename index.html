@@ -313,6 +313,7 @@ body.dark .btn-ghost:hover { color: #e2e8f0 !important; border-color: #64748b !i
 #auth-message {min-height:36px;font-size:13px;line-height:1.4;margin-top:14px;color:#475569;}#auth-message[data-error=true] {color:#b91c1c;}
 
 </style>
+<link rel="stylesheet" href="studio.css">
 </head>
 <body>
 <script src="config.js"></script>
@@ -320,7 +321,7 @@ body.dark .btn-ghost:hover { color: #e2e8f0 !important; border-color: #64748b !i
 
 <div id="auth-screen">
   <div class="auth-card">
-    <h1>Prague Eyewear Offers</h1>
+    <img class="auth-brand" src="assets/prague-eyewear.png" alt="Prague Eyewear GmbH"><h1>Newsletter Studio</h1>
     <p>Bitte melden Sie sich mit Ihrem freigeschalteten Konto an.</p>
     <form id="auth-form">
       <label class="auth-label" for="auth-email">E-Mail</label>
@@ -340,8 +341,8 @@ body.dark .btn-ghost:hover { color: #e2e8f0 !important; border-color: #64748b !i
 <!-- TOP BAR -->
 <div class="topbar">
   <div>
-    <div class="topbar-logo">BRILLEN<span>GROẞHANDEL</span></div>
-    <div class="topbar-sub">Newsletter Builder · MI Optics</div>
+    <div class="topbar-logo"><img src="assets/prague-eyewear.png" alt="Prague Eyewear GmbH"></div>
+    <div class="topbar-sub">Newsletter Studio</div>
   </div>
   <div class="topbar-spacer"></div>
   <div class="account-area">
@@ -367,6 +368,7 @@ body.dark .btn-ghost:hover { color: #e2e8f0 !important; border-color: #64748b !i
 <div class="main">
   <!-- ══════════════ SIDEBAR ══════════════ -->
   <div class="sidebar">
+    <div class="studio-heading"><span>NEWSLETTER STUDIO</span><h2>Angebot gestalten</h2><p>Produkte auswählen, Inhalte anpassen und exportieren.</p></div>
 
     <!-- ① KOPFZEILE -->
     <div class="sect">
@@ -375,8 +377,8 @@ body.dark .btn-ghost:hover { color: #e2e8f0 !important; border-color: #64748b !i
         <span class="sect-caret" id="caret-zahlaví">▸</span>
       </div>
       <div id="body-zahlaví" style="display:none" class="sect-body">
-        <label class="field-label">Logo-Bild (URL)</label>
-        <input type="text" id="logo-url" value="" oninput="refresh()">
+        <label class="field-label">Eigenes Logo (URL, optional)</label>
+        <input type="text" id="logo-url" placeholder="Prague Eyewear Logo ist hinterlegt" value="" oninput="refresh()">
         <div class="row2" style="margin-top:9px">
           <div>
             <label class="field-label" style="margin-top:0">KW</label>
@@ -1468,10 +1470,10 @@ function onDragEnd() {
 //  des Brillengroßhandels) – funktioniert in Outlook,
 //  Seznam, Gmail usw.
 // ════════════════════════════════════════════════════
-const C_RED_HDR = '#B62E2E';
-const C_RED     = '#A72323';
-const C_GREY_BG = '#F5F5F5';
-const C_PINK    = '#FCE8E8';
+const C_RED_HDR = '#FFFFFF';
+const C_RED     = '#547A9D';
+const C_GREY_BG = '#FFFFFF';
+const C_PINK    = '#F0F5FA';
 const C_LINE    = '#CBCBCB';
 const F_ARIAL   = "Arial,Helvetica,sans-serif";
 const F_VERD    = "Verdana,Geneva,sans-serif";
@@ -1515,7 +1517,7 @@ function buildProductCell(p, v, ex, web) {
 function buildHTML() {
   const kw        = val('kw');
   const jahr      = val('jahr');
-  const logoUrl   = safeWebURL(val('logo-url'));
+  const logoUrl   = safeWebURL(val('logo-url')) || 'https://kaiserjiri.github.io/prague-eyewear-offers/assets/prague-eyewear.png';
   const anrede    = val('anrede');
   const untertitel= val('untertitel');
   const titel     = val('aktion-titel');
@@ -1611,8 +1613,8 @@ ${pretextTag}
 <table role="presentation" border="0" cellspacing="0" cellpadding="0" width="900" style="width:100%;max-width:900px">
 
   <!-- LOGO -->
-  <tr><td align="center" style="background:${C_RED_HDR};padding:0">
-    ${logoUrl ? `<img src="${esc(logoUrl)}" width="900" alt="${esc(firma)} – Aktionsware" style="display:block;width:100%;max-width:900px;height:auto;border:0">` : `<div style="padding:30px;font-family:${F_VERD};font-size:28px;color:#ffffff">${esc(firma)}</div>`}
+  <tr><td align="center" style="background:${C_RED_HDR};padding:32px 24px;border-bottom:3px solid #7c9abc">
+    ${logoUrl ? `<img src="${esc(logoUrl)}" width="210" alt="${esc(firma)}" style="display:block;width:210px;max-width:100%;height:auto;border:0">` : `<div style="padding:30px;font-family:${F_VERD};font-size:28px;color:#ffffff">${esc(firma)}</div>`}
   </td></tr>
 
   <!-- INHALT -->

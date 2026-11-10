@@ -1,0 +1,30 @@
+/* Prague Eyewear Studio — shared brand, existing editor behaviour. */
+:root {--acc:#6089af;--dark:#18293b;--mid:#3d5268;--muted:#718197;--border:#dce5ee;--bg:#eef3f8}
+body{font-size:14px}
+.topbar,body.dark .topbar{min-height:88px;height:auto;padding:14px 24px;gap:9px;background:#fff;border-bottom:1px solid #dce5ee;flex-wrap:wrap}
+.topbar-logo img{display:block;width:88px;height:62px;object-fit:contain}
+.topbar-sub{color:#718197;letter-spacing:1.5px;font-size:9px;margin:5px 0 0;text-transform:uppercase}
+.btn{padding:10px 13px;border-radius:9px;font-size:12px}
+.btn-ghost,body.dark .btn-ghost{background:#fff;color:#486078!important;border:1px solid #d5e0eb!important}
+.btn-ghost:hover,body.dark .btn-ghost:hover{background:#edf3f8;color:#244361!important}
+.btn-green{background:#315b7e}.btn-primary{background:#6089af}
+.account-area{background:#f3f6fa;border:1px solid #dce5ee;border-radius:10px}
+.account-identity{color:#486078}.account-logout{background:#fff;color:#486078;border-color:#d5e0eb}.account-logout:hover{background:#edf3f8}
+.sidebar,body.dark .sidebar{width:440px;min-width:380px;background:#f7f9fc;padding:20px 16px;scrollbar-gutter:stable}
+.studio-heading{padding:4px 8px 23px}.studio-heading>span{font-size:10px;letter-spacing:2px;color:#6089af;font-weight:700}.studio-heading h2{font-size:25px;letter-spacing:-.7px;color:#20374d;margin:9px 0}.studio-heading p{font-size:12px;color:#718197;line-height:1.6}
+.sect,body.dark .sect{background:#fff;border:1px solid #dce5ee;border-radius:12px;margin-bottom:10px;overflow:hidden}
+.sect-toggle{padding:16px}.sect-toggle:hover,body.dark .sect-toggle:hover{background:#f1f6fa}
+.sect-title,body.dark .sect-title{font-size:11px;letter-spacing:.7px;color:#486078}.sect-num,body.dark .sect-num{width:25px;height:25px;background:#edf3f8;color:#6089af;font-size:11px}.sect-toggle.open{background:#f1f6fa}.sect-caret{color:#7c93aa}
+.sect-body{padding:8px 16px 20px}.field-label,body.dark .field-label{font-size:12px;color:#486078!important;margin-top:14px}.sect-sub,body.dark .sect-sub{font-size:10px;color:#718197}
+input[type=text],input[type=number],input[type=password],textarea,select,body.dark input[type=text],body.dark input[type=number],body.dark input[type=password],body.dark textarea{background:#f9fbfd!important;color:#20374d!important;border:1px solid #d5e0eb!important;border-radius:8px;padding:10px 11px;font-size:13px}
+input:focus-visible,textarea:focus-visible,select:focus-visible,button:focus-visible,.sect-toggle:focus-visible{outline:2px solid #6089af;outline-offset:2px}
+.chip,body.dark .chip{background:#f5f8fc;color:#486078;border-color:#dce5ee;padding:6px 10px;font-size:11px}.chip.active,body.dark .chip.active{background:#6089af;color:white;border-color:#6089af}
+.model-list{max-height:380px;gap:7px}.model-item,body.dark .model-item{background:#fff;border:1px solid #dce5ee;border-radius:10px;padding:11px}.model-item:hover,body.dark .model-item:hover{background:#f1f6fa;border-color:#90abc5}.model-item.on,body.dark .model-item.on{background:#eaf2fa;border-color:#6089af}.model-name,body.dark .model-name{color:#20374d!important;font-size:13px}.model-sub,body.dark .model-sub{color:#718197!important}.model-thumb,body.dark .model-thumb{background:#fff;border-color:#e3eaf2}
+.sel-card,body.dark .sel-card{background:#f7faff;border:1px solid #dce5ee;border-radius:10px;padding:14px}.sel-card-name,body.dark .sel-card-name{color:#20374d!important}.badge-btn,body.dark .badge-btn,.mini-btn,body.dark .mini-btn{background:#fff;color:#486078;border-color:#d5e0eb;border-radius:5px;padding:5px 8px}
+.preview-bar,body.dark .preview-bar{padding:17px 24px;background:#edf3f8;border-color:#dce5ee;color:#718197;font-size:12px}.preview-bar strong,body.dark .preview-bar strong{color:#315b7e}
+#auth-screen{background:radial-gradient(ellipse at top,#e2edf7,#f7f9fc 70%)}.auth-card{border:1px solid #dce5ee;box-shadow:0 24px 80px #20374d15;border-radius:20px;padding:36px}.auth-brand{display:block;width:140px;height:auto;margin:0 0 28px}.auth-card h1{color:#20374d}.auth-submit{background:#6089af;border-radius:9px}
+/* Dark preference remains available with the same brand accent. */
+body.dark{--border:#344b62;--mid:#c6d7e7;background:#142435}body.dark .sidebar{background:#192d40}body.dark .studio-heading h2{color:#e5eff8}body.dark .studio-heading p{color:#a0b4c8}body.dark .sect{background:#20374d;border-color:#344b62}body.dark .sect-title{color:#d0dfed}body.dark .sect-toggle.open,body.dark .sect-toggle:hover{background:#29455f}body.dark .field-label{color:#c6d7e7!important}body.dark .sect-sub{color:#a0b4c8}
+@media(min-width:1600px){.sidebar,body.dark .sidebar{width:480px}}
+@media(min-width:769px) and (max-width:1100px){.sidebar,body.dark .sidebar{width:380px;min-width:340px}.topbar{padding:12px 16px}.account-identity{max-width:170px}}
+@media(max-width:768px){.topbar,body.dark .topbar{min-height:0;padding:10px;gap:6px;flex-wrap:nowrap}.sidebar,body.dark .sidebar{padding:16px 10px;min-width:0}.studio-heading{padding:4px 8px 18px}.btn{min-height:40px}.preview-bar{padding:13px}.auth-card{padding:25px;width:calc(100% - 32px)}.auth-brand{width:120px}}

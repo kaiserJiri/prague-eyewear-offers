@@ -42,7 +42,7 @@ form.addEventListener("submit",async e=>{
   try{
     const out=await call({...body,requestId});
     form.hidden=true;
-    status.textContent="Testanfrage gespeichert: "+out.reference+". Test-E-Mails gehen ausschließlich an das interne Testpostfach.";
+    status.textContent="Testanfrage gespeichert: "+out.reference+". Der E-Mail-Versand ist derzeit nicht verbunden.";
   }catch(e){status.textContent=e.message+" Bei Verbindungsfehler bitte mit unveränderten Eingaben erneut versuchen.";}
   finally{button.disabled=false;}
 });
