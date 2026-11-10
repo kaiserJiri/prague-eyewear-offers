@@ -514,10 +514,12 @@ body.dark .btn-ghost:hover { color: #e2e8f0 !important; border-color: #64748b !i
       <div id="body-ceny" style="display:none" class="sect-body">
         <label class="field-label" for="pe-expiry">Testangebot gültig bis (lokale Zeit)</label>
         <input type="datetime-local" id="pe-expiry" oninput="refresh()">
-        <p>Testbetrieb: nur Beispieldaten, E-Mail nur an das interne Testpostfach.</p>
+        <p class="pe-test-note">Testbetrieb: nur Beispieldaten. E-Mail-Versand ist nicht verbunden.</p>
+        <div class="pe-offer-actions">
         <button type="button" class="btn" id="pe-publish">Testlink erstellen</button>
         <button type="button" class="btn" id="pe-close">Aktuellen Link schließen</button>
         <button type="button" class="btn" id="pe-orders">Testanfragen anzeigen</button>
+        </div>
         <input type="text" id="pe-link" readonly aria-label="Testlink">
         <p id="pe-status" role="status"></p>
         <pre id="pe-list" style="white-space:pre-wrap;overflow-wrap:anywhere"></pre>

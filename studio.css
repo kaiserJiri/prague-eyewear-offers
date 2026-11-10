@@ -28,3 +28,55 @@ body.dark{--border:#344b62;--mid:#c6d7e7;background:#142435}body.dark .sidebar{b
 @media(min-width:1600px){.sidebar,body.dark .sidebar{width:480px}}
 @media(min-width:769px) and (max-width:1100px){.sidebar,body.dark .sidebar{width:380px;min-width:340px}.topbar{padding:12px 16px}.account-identity{max-width:170px}}
 @media(max-width:768px){.topbar,body.dark .topbar{min-height:0;padding:10px;gap:6px;flex-wrap:nowrap}.sidebar,body.dark .sidebar{padding:16px 10px;min-width:0}.studio-heading{padding:4px 8px 18px}.btn{min-height:40px}.preview-bar{padding:13px}.auth-card{padding:25px;width:calc(100% - 32px)}.auth-brand{width:120px}}
+/* Complete dark editor palette; newsletter content retains its email colours. */
+body.dark{color-scheme:dark;color:#e4edf7;--bg:#101d2b;--muted:#a2b5ca;--acc:#7ea8ce}
+body.dark .topbar{background:#101d2b;border-bottom-color:#30475e}
+body.dark .topbar-sub{color:#a2b5ca}
+body.dark .account-area{background:#192d40;border-color:#344b62}
+body.dark .account-identity{color:#d0dfed}
+body.dark .account-logout{background:#20374d;color:#d0dfed;border-color:#49637c}
+body.dark .account-logout:hover{background:#2b4964}
+body.dark .btn-ghost{background:#1b3045!important;color:#d0dfed!important;border-color:#405b75!important}
+body.dark .btn-ghost:hover{background:#29455f!important;color:#fff!important}
+body.dark .btn-primary{background:#729ac0;color:#101d2b}
+body.dark .btn-green{background:#426e95;color:#fff}
+body.dark .preview-pane{background:#101d2b}
+body.dark .preview-bar{background:#192d40;color:#a2b5ca;border-color:#344b62}
+body.dark .preview-bar strong{color:#e4edf7}
+body.dark .sect-num{background:#344e68;color:#d5e5f4}
+body.dark .sect-toggle.open .sect-num{background:#7ea8ce;color:#101d2b}
+body.dark .sect-caret{color:#a2b5ca}
+body.dark input[type=text],body.dark input[type=number],body.dark input[type=password],body.dark input[type=email],body.dark input[type=datetime-local],body.dark input[type=date],body.dark textarea,body.dark select{background:#142638!important;color:#e4edf7!important;border-color:#49637c!important}
+body.dark input::placeholder,body.dark textarea::placeholder{color:#91a7bd!important}
+body.dark .chip{background:#192d40;color:#c6d7e7;border-color:#49637c}
+body.dark .chip.active{background:#7ea8ce;color:#101d2b;border-color:#7ea8ce}
+body.dark .model-item{background:#192d40;border-color:#405b75}
+body.dark .model-item:hover{background:#29455f;border-color:#7ea8ce}
+body.dark .model-item.on{background:#2a4964;border-color:#7ea8ce}
+body.dark .model-name,body.dark .sel-card-name{color:#e4edf7!important}
+body.dark .model-sub{color:#a2b5ca!important}
+body.dark .sel-card{background:#192d40;border-color:#405b75}
+body.dark .mini-btn,body.dark .badge-btn{background:#20374d;color:#d0dfed;border-color:#49637c}
+body.dark .mini-btn:hover,body.dark .badge-btn:hover{background:#2b4964;color:#fff}
+body.dark .model-add,body.dark .drag-handle{color:#a2b5ca}
+body.dark .sidebar::-webkit-scrollbar-thumb,body.dark .model-list::-webkit-scrollbar-thumb{background:#49637c}
+body.dark .studio-heading>span{color:#9fbfdd}
+/* Consistent sidebar actions and offer controls. */
+.sidebar .btn{background:#edf3f8;color:#315b7e;border:1px solid #cad9e7;min-height:42px;padding:11px 14px;line-height:1.35;font-family:inherit;white-space:normal;text-align:center}
+.sidebar .btn:hover{background:#dce9f4;opacity:1}
+.pe-offer-actions{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:14px 0}
+.pe-offer-actions #pe-publish{grid-column:1 / -1;background:#6089af;color:#fff;border-color:#6089af}
+.pe-offer-actions #pe-publish:hover{background:#4b759c}
+.pe-offer-actions #pe-close{color:#a14040;border-color:#dfbaba;background:#fff7f7}
+.pe-test-note{font-size:12px;line-height:1.6;color:#718197;margin-top:9px}
+#pe-expiry{display:block;width:100%;min-height:43px;padding:10px 12px;border:1px solid #d5e0eb;border-radius:8px;background:#f9fbfd;color:#20374d;font:inherit;margin:7px 0}
+#pe-link{margin:0 0 10px;font-size:12px}
+#pe-status{font-size:12px;line-height:1.6;margin:8px 0;overflow-wrap:anywhere}
+#pe-list{font-size:12px;line-height:1.6;overflow-wrap:anywhere}
+body.dark .sidebar .btn{background:#29455f;color:#e4edf7;border-color:#49637c}
+body.dark .sidebar .btn:hover{background:#345875}
+body.dark .pe-offer-actions #pe-publish{background:#7ea8ce;color:#101d2b;border-color:#7ea8ce}
+body.dark .pe-offer-actions #pe-publish:hover{background:#9bbbd8}
+body.dark .pe-offer-actions #pe-close{color:#f2b8b8;background:#392c39;border-color:#825766}
+body.dark .pe-test-note{color:#a2b5ca}
+@media(max-width:400px){.pe-offer-actions{grid-template-columns:1fr}}
