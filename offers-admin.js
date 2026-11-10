@@ -17,7 +17,7 @@ function offerPayload() {
     const [whole,part=""]=price.replace(",",".").split(".");
     const cents=Number(whole)*100+Number(part.padEnd(2,"0"));
     for (const v of (p.variants||[]).filter(v=>hasColor(v,ex.colorFilter))) {
-      items.push({model:p.modelName,variant:[v.variantCode,transColor(v.colorName||"")].filter(Boolean).join(" · ")||"Standard",cents});
+      items.push({image:v.thumbImage ? imgUrl(v.thumbImage) : null,model:p.modelName,variant:[v.variantCode,transColor(v.colorName||"")].filter(Boolean).join(" · ")||"Standard",cents});
     }
   }
   return {title:val("aktion-titel").trim(),expiresAt:new Date(val("pe-expiry")).getTime(),items};

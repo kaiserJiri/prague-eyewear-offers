@@ -17,11 +17,16 @@ async function initOrder(){
   fields=data.items.map(item=>{
     const row=document.createElement("div"), info=document.createElement("div"), label=document.createElement("label"), input=document.createElement("input");
     row.className="item";
+    const media=document.createElement("div");media.className="item-media";
+    const placeholder=()=>{media.textContent="Bild nicht verfügbar";media.classList.add("image-missing");};
+    let imageUrl=null;
+    try {const u=new URL(item.image);if(u.protocol==="https:"&&u.hostname==="cz.mi-optics.cz"&&u.pathname.startsWith("/img-products/"))imageUrl=u.href;}catch{}
+    if(imageUrl){const img=document.createElement("img");img.src=imageUrl;img.alt=item.model+" · "+item.variant;img.loading="lazy";img.referrerPolicy="no-referrer";img.addEventListener("error",placeholder,{once:true});media.append(img);}else{placeholder();}
     info.textContent=item.model+" · "+item.variant+" · "+money.format(item.cents/100);
     label.textContent="Stück";
     input.type="number";input.min="0";input.max="99";input.step="1";input.value="0";input.required=true;
     input.setAttribute("aria-label","Stück: "+item.model+" "+item.variant);
-    label.append(input);row.append(info,label);el("items").append(row);
+    label.append(input);row.append(media,info,label);el("items").append(row);
     input.addEventListener("input",total);
     return {item,input};
   });

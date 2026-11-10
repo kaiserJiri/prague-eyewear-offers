@@ -313,6 +313,7 @@ body.dark .btn-ghost:hover { color: #e2e8f0 !important; border-color: #64748b !i
 #auth-message {min-height:36px;font-size:13px;line-height:1.4;margin-top:14px;color:#475569;}#auth-message[data-error=true] {color:#b91c1c;}
 
 </style>
+<link rel="icon" type="image/png" href="assets/prague-eyewear.png">
 <link rel="stylesheet" href="studio.css">
 </head>
 <body class="dark">
@@ -1380,11 +1381,11 @@ function rebuildSelConfig() {
       <div class="row2" style="margin-top:6px">
         <div>
           <label class="field-label" style="margin-top:0">Originalpreis</label>
-          <input type="text" value="${esc(ex.orig)}" placeholder="27,90 €" data-extra="orig">
+          <div class="currency-field"><input type="text" value="${esc(ex.orig)}" placeholder="27,90" data-extra="orig"><span aria-hidden="true">€</span></div>
         </div>
         <div>
           <label class="field-label" style="margin-top:0">A-Preis</label>
-          <input type="text" value="${esc(ex.price)}" placeholder="${esc(defPrice)}" data-extra="price">
+          <div class="currency-field"><input type="text" value="${esc(ex.price)}" placeholder="${esc(defPrice.replace(/\s*€$/, ''))}" data-extra="price"><span aria-hidden="true">€</span></div>
         </div>
       </div>
       <label class="field-label">Farben im Newsletter</label>
@@ -1486,6 +1487,8 @@ function autoSubject() {
 
 const HR = `<div style="text-align:center"><hr size="2" width="100%" align="center" style="border:0;border-top:1px solid #9a9a9a;border-bottom:1px solid #eeeeee;height:0;margin:6px 0"></div>`;
 
+function euroPrice(value) { return String(value).trim().replace(/\s*€$/, '').trim() + ' €'; }
+
 function buildProductCell(p, v, ex, web) {
   const sp = p.specs || {};
   const fbk = FALLBACK_IMG;
@@ -1505,8 +1508,8 @@ function buildProductCell(p, v, ex, web) {
     abbr ? esc(abbr) : '',
     colorLine ? esc(colorLine) : '',
     ex.desc ? esc(ex.desc) : '',
-    ex.orig ? `Originalpreis: ${esc(ex.orig)} -` : '',
-    aPreis ? `<strong style="font-family:${F_ARIAL};color:#000000">A-Preis: ${esc(aPreis)}</strong>` : ''
+    ex.orig ? `Originalpreis: ${esc(euroPrice(ex.orig))} -` : '',
+    aPreis ? `<strong style="font-family:${F_ARIAL};color:#000000">A-Preis: ${esc(euroPrice(aPreis))}</strong>` : ''
   ].filter(Boolean).join('<br>\n');
 
   return `<td width="33%" valign="top" align="center" style="width:33%;padding:8px 4px 4px 4px">
@@ -1889,21 +1892,7 @@ window.addEventListener('DOMContentLoaded', () => {
   init();
 });
 </script>
-<script>
-(function(){
-  const c=document.createElement("canvas");c.width=c.height=64;
-  const x=c.getContext("2d");
-  x.fillStyle="#e87722";
-  x.beginPath();x.moveTo(14,0);x.lineTo(50,0);x.quadraticCurveTo(64,0,64,14);
-  x.lineTo(64,50);x.quadraticCurveTo(64,64,50,64);x.lineTo(14,64);
-  x.quadraticCurveTo(0,64,0,50);x.lineTo(0,14);x.quadraticCurveTo(0,0,14,0);
-  x.closePath();x.fill();
-  x.fillStyle="white";x.font="bold 38px Arial,sans-serif";
-  x.textAlign="center";x.textBaseline="middle";x.fillText("N",32,33);
-  const l=document.createElement("link");l.rel="icon";l.href=c.toDataURL();
-  document.head.appendChild(l);
-})();
-</script>
+
 </div><!-- app-shell -->
 </body>
 </html>

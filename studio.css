@@ -88,3 +88,4 @@ body.dark .auth-card h1{color:#e4edf7}
 body.dark .auth-card p,body.dark #auth-message{color:#a2b5ca}
 body.dark #auth-message[data-error=true]{color:#ffabab}
 body.dark .auth-submit{background:#7ea8ce;color:#101d2b}
+.currency-field{position:relative}.currency-field input{padding-right:36px!important}.currency-field>span{position:absolute;right:13px;top:50%;transform:translateY(-50%);color:#486078;font-weight:700;pointer-events:none}body.dark .currency-field>span{color:#c6d7e7}
