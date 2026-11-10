@@ -80,3 +80,11 @@ body.dark .pe-offer-actions #pe-publish:hover{background:#9bbbd8}
 body.dark .pe-offer-actions #pe-close{color:#f2b8b8;background:#392c39;border-color:#825766}
 body.dark .pe-test-note{color:#a2b5ca}
 @media(max-width:400px){.pe-offer-actions{grid-template-columns:1fr}}
+
+/* Permanent dark studio, including the sign-in screen. */
+body.dark #auth-screen{background:radial-gradient(ellipse at top,#203b55,#101d2b 75%)}
+body.dark .auth-card{background:#192d40;border-color:#344b62;box-shadow:0 24px 80px #0004;color:#e4edf7}
+body.dark .auth-card h1{color:#e4edf7}
+body.dark .auth-card p,body.dark #auth-message{color:#a2b5ca}
+body.dark #auth-message[data-error=true]{color:#ffabab}
+body.dark .auth-submit{background:#7ea8ce;color:#101d2b}
